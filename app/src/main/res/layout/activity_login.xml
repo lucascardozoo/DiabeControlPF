@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LoginActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:src="@drawable/logo_ancho"
+        android:layout_marginTop="50dp"
+        android:id="@+id/logoEnLogin"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bienvenido"
+        android:layout_below="@+id/logoEnLogin"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:id="@+id/textBienvenido"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:layout_below="@+id/textBienvenido"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:layout_marginTop="55dp"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/txtLogin"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/email"
+        android:layout_below="@+id/txtLogin"
+        android:textSize="12dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/txtemail"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtemail"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/etEmail"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etEmail"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/contrasenia"
+        android:textSize="12dp"
+        android:id="@+id/txtContraseniaLogin"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtContraseniaLogin"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/etContraseña"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etContraseña"
+        android:layout_marginTop="20dp"
+        android:text="@string/iniciarSesion"
+        android:layout_gravity="center"
+        android:id="@+id/btnIniciarSesion"
+        android:onClick="eventoBtnIniciarSesion"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnIniciarSesion"
+        android:layout_marginTop="30dp"
+        android:text="@string/registrarse"
+        android:layout_gravity="center"
+        android:id="@+id/btnRegistrarse"
+        android:onClick="eventoBtnRegistrarse"/>
+
+</LinearLayout>

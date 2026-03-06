@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">AppMobile_DiabeControl</string>
+    <string name="bienvenido">Bienvenido</string>
+    <string name="login">LOGIN</string>
+    <string name="email">Email</string>
+    <string name="contrasenia">Contraseña</string>
+    <string name="iniciarSesion">INICIAR SESIÓN</string>
+    <string name="registrarse">REGISTRARSE</string>
+</resources>
