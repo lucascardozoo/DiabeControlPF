@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:text="@string/bienvenido"
         android:layout_below="@+id/logoEnLogin"
+        android:layout_marginTop="15dp"
         android:textSize="22dp"
         android:textStyle="bold"
         android:gravity="center"
@@ -44,7 +45,7 @@
         android:textSize="12dp"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
-        android:id="@+id/txtemail"/>
+        android:id="@+id/txtEmail"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -71,7 +72,7 @@
         android:layout_below="@+id/txtContraseniaLogin"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:id="@+id/etContraseña"/>
+        android:id="@+id/etContrasenia"/>
 
     <Button
         android:layout_width="wrap_content"
