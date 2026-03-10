@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void eventoBtnIniciarSesion(View view) {
-        intent = new Intent(getApplicationContext(), ConfigParamActivity.class);
+        intent = new Intent(getApplicationContext(), PrincipalActivity.class);
         startActivity(intent);
     }
 

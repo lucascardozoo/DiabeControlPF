@@ -1,16 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".RegistroActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:src="@drawable/logo_ancho"
+        android:layout_marginTop="50dp"
+        android:id="@+id/logoEnRegistro"/>
+
     <TextView
+        android:id="@+id/txtRegistro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Registro"
+        android:layout_below="@+id/logoEnRegistro"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/registro"
+        android:textSize="16sp"
         android:textStyle="bold"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/txtNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtRegistro"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Nombre"
+        android:textSize="12sp"/>
+
+    <EditText
+        android:id="@+id/etNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtNombre"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:inputType="text"/>
+
+    <TextView
+        android:id="@+id/txtEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etNombre"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Email"/>
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtEmail"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:inputType="textEmailAddress"/>
+
+    <TextView
+        android:id="@+id/txtContrasenia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etEmail"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Contraseña"/>
+
+    <EditText
+        android:id="@+id/etContrasenia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtContrasenia"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:inputType="textPassword"/>
+
+    <Button
+        android:id="@+id/btnAceptar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etContraseña"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="Aceptar"
+        android:onClick="eventoBtnNuevoRegistro"/>
+
+</LinearLayout>
+

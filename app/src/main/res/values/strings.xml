@@ -6,4 +6,5 @@
     <string name="contrasenia">Contraseña</string>
     <string name="iniciarSesion">INICIAR SESIÓN</string>
     <string name="registrarse">REGISTRARSE</string>
+    <string name="registro">REGISTRO</string>
 </resources>
