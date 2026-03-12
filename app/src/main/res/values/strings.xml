@@ -7,4 +7,7 @@
     <string name="iniciarSesion">INICIAR SESIÓN</string>
     <string name="registrarse">REGISTRARSE</string>
     <string name="registro">REGISTRO</string>
+    <string name="config">CONFIGURACIÓN DEL TRATAMIENTO</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

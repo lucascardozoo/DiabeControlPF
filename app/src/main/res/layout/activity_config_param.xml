@@ -1,17 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ConfigParamActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:src="@drawable/logo_ancho"
+        android:layout_marginTop="50dp"
+        android:id="@+id/logoEnConfig"/>
+
     <TextView
+        android:id="@+id/txtConfig"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Configurar parámetros de tratamiento"
+        android:layout_below="@+id/logoEnConfig"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/config"
+        android:textSize="16sp"
         android:textStyle="bold"/>
 
+    <TextView
+        android:id="@+id/txtTipoDeInsulina"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtConfig"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Seleccione tipo de insulina"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <EditText
+        android:id="@+id/etSecInsulina"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTipoDeInsulina"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:inputType="number"/>
+
+    <TextView
+        android:id="@+id/txtFactorCorreccion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etSecInsulina"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Factor de corrección"/>
+
+    <EditText
+        android:id="@+id/etFactCorreccion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtFactorCorreccion"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:inputType="number"/>
+
+    <TextView
+        android:id="@+id/txtUmbralMinimo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etFactCorreccion"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Umbral mínimo de corrección" />
+
+    <EditText
+        android:id="@+id/etUmbralMin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtUmbralMinimo"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:inputType="number"/>
+
+    <TextView
+        android:id="@+id/txtUmbralMaximo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etUmbralMin"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Umbral máximo de corrección" />
+
+    <EditText
+        android:id="@+id/etUmbralMax"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtUmbralMaximo"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:inputType="number"/>
+
+    <TextView
+        android:id="@+id/txtRelacionInsuHidrato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etUmbralMax"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Relación insulina/hidratos (ej:10)" />
+
+    <EditText
+        android:id="@+id/etRelacionInsuHidrato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtRelacionInsuHidrato"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/btnGuardarConfiguracion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etRelacionInsuHidrato"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="Guardar configuración"
+        android:onClick="eventoBtnGuardarConfiguracion"/>
+
+    </LinearLayout>

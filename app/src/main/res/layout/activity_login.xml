@@ -53,6 +53,7 @@
         android:layout_below="@+id/txtemail"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:inputType="textEmailAddress"
         android:id="@+id/etEmail"/>
 
     <TextView
@@ -72,6 +73,7 @@
         android:layout_below="@+id/txtContraseniaLogin"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:inputType="textPassword"
         android:id="@+id/etContrasenia"/>
 
     <Button
