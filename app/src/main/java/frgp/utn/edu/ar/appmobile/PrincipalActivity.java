@@ -7,13 +7,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import adapter.TabAdapter;
+import adapter.TabAdapterViewPager;
 
 public class PrincipalActivity extends AppCompatActivity {
 
@@ -32,7 +31,7 @@ public class PrincipalActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager2 = findViewById(R.id.tabViewPager);
 
-        TabAdapter adapterTab = new TabAdapter(this);
+        TabAdapterViewPager adapterTab = new TabAdapterViewPager(this);
         viewPager2.setAdapter(adapterTab);
 
         final String[] titles = new String[]{"Glucemia", "Comida", "Historial"};

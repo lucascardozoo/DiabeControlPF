@@ -2,9 +2,12 @@ package frgp.utn.edu.ar.appmobile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CpuUsageInfo;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,12 +15,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import Entidad.Usuario;
+import OpenHelper.OpenHelper;
+
 public class RegistroActivity extends AppCompatActivity {
 
     Intent intent;
     private EditText etNombre;
     private EditText etEmail;
     private EditText etContrasenia;
+    private Usuario usuario;
+    private OpenHelper bd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,14 @@ public class RegistroActivity extends AppCompatActivity {
         {
             etNombre.setError("Campo requerido");
             estado = false;
+        }
+        else
+        {
+            if (etNombre.getText().toString().length() < 3)
+            {
+                etNombre.setError("Mínimo 3 caracteres");
+                estado = false;
+            }
         }
 
         // Validacion de email
@@ -84,12 +100,36 @@ public class RegistroActivity extends AppCompatActivity {
         return estado;
     }
     public void eventoBtnNuevoRegistro(View view) {
+        long resultado;
 
         if(!validacionesRegistro())
         {
             return;
         }
 
+        bd = new OpenHelper(this, "DiabeControDB", null, 1);
+        usuario = new Usuario();
+        usuario.setNombre(etNombre.getText().toString());
+        usuario.setEmail(etEmail.getText().toString());
+        usuario.setContrasenia(etContrasenia.getText().toString());
+        resultado = bd.insertarUsuario(usuario);
+        if(resultado == -2)
+        {
+            Toast.makeText(this, "Email ya registrado", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else
+        {
+            if(resultado == -1)
+            {
+                Toast.makeText(this, "Error al registrar usuario", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        etNombre.setText("");
+        etEmail.setText("");
+        etContrasenia.setText("");
         intent = new Intent(getApplicationContext(), ConfigParamActivity.class);
         startActivity(intent);
     }

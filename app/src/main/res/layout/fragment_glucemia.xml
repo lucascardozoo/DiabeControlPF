@@ -5,10 +5,77 @@
     android:layout_height="match_parent"
     tools:context=".fragmentGlucemia">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="FRAGMENTO DONDE EL USUARIO VA A REGISTRAR SUS NUEVAS MEDICIONES DE GLUCEMIAS" />
+        android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtRegistroGlucemia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="Registrar Glucemia"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:text="Nivel de glucemia (mg/dL):" />
+
+        <EditText
+            android:id="@+id/editTextNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="Estación alimenticia:" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"/>
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="Horario de medición:" />
+
+        <EditText
+            android:id="@+id/editTextTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:ems="10"
+            android:inputType="time" />
+
+        <Button
+            android:id="@+id/btnRegistrarGlucemia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:text="Guardar" />
+
+    </LinearLayout>
 
 </FrameLayout>

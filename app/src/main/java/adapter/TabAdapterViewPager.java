@@ -8,8 +8,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import frgp.utn.edu.ar.appmobile.fragmentComida;
 import frgp.utn.edu.ar.appmobile.fragmentGlucemia;
 import frgp.utn.edu.ar.appmobile.fragmentHistorial;
-public class TabAdapter extends FragmentStateAdapter {
-    public TabAdapter(@NonNull FragmentActivity fragmentActivity) {
+public class TabAdapterViewPager extends FragmentStateAdapter {
+    public TabAdapterViewPager(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
     @NonNull

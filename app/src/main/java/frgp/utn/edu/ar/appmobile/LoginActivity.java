@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,11 +13,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import Entidad.Usuario;
+import OpenHelper.OpenHelper;
+
 public class LoginActivity extends AppCompatActivity {
     Intent intent;
 
     private EditText etEmail;
     private EditText etContrasenia;
+    private Usuario usuario;
+    private OpenHelper bd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,13 +83,25 @@ public class LoginActivity extends AppCompatActivity {
 
     public void eventoBtnIniciarSesion(View view) {
 
-        // Invocacion de funcion
-        // Si devuelve false el boton no redirecciona a la pantalla principal
+        // Invocacion de funcion validaciones
+        // Si devuelve false, el boton no redirecciona a la pantalla principal
         if (!validaciones())
         {
             return;
         }
 
+        bd = new OpenHelper(this, "DiabeControDB", null, 1);
+        usuario = new Usuario();
+        usuario.setEmail(etEmail.getText().toString());
+        usuario.setContrasenia(etContrasenia.getText().toString());
+        if(!bd.buscarUsuario(usuario))
+        {
+            Toast.makeText(this, "Email y/o contraseña incorrecta", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        etEmail.setText("");
+        etContrasenia.setText("");
         intent = new Intent(getApplicationContext(), PrincipalActivity.class);
         startActivity(intent);
     }

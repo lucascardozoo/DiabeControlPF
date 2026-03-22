@@ -22,6 +22,7 @@
         android:layout_below="@+id/logoEnConfig"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
         android:text="@string/config"
         android:textSize="16sp"
         android:textStyle="bold"/>
@@ -33,25 +34,60 @@
         android:layout_below="@+id/txtConfig"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:text="Seleccione tipo de insulina"/>
 
-
-    <EditText
-        android:id="@+id/etSecInsulina"
+    <TableRow
+        android:id="@+id/trRapida"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtTipoDeInsulina"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:inputType="number"/>
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp">
+
+        <TextView
+            android:id="@+id/txtRapida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rápida: " />
+
+        <Spinner
+            android:id="@+id/spRapida"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="202dp"/>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/trBasal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trRapida"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp">
+
+        <TextView
+            android:id="@+id/txtBasal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Basal: " />
+
+        <Spinner
+            android:id="@+id/spBasal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="210dp"/>
+
+    </TableRow>
 
     <TextView
         android:id="@+id/txtFactorCorreccion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etSecInsulina"
+        android:layout_below="@+id/trBasal"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:text="Factor de corrección"/>
 
     <EditText
@@ -60,7 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtFactorCorreccion"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="280dp"
         android:inputType="number"/>
 
     <TextView
@@ -70,6 +106,7 @@
         android:layout_below="@+id/etFactCorreccion"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
         android:text="Umbral mínimo de corrección" />
 
     <EditText
@@ -78,7 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtUmbralMinimo"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="280dp"
         android:inputType="number"/>
 
     <TextView
@@ -88,6 +125,7 @@
         android:layout_below="@+id/etUmbralMin"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
         android:text="Umbral máximo de corrección" />
 
     <EditText
@@ -96,7 +134,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtUmbralMaximo"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="280dp"
         android:inputType="number"/>
 
     <TextView
@@ -106,6 +144,7 @@
         android:layout_below="@+id/etUmbralMax"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
         android:text="Relación insulina/hidratos (ej:10)" />
 
     <EditText
@@ -114,7 +153,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtRelacionInsuHidrato"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="280dp"
         android:inputType="number" />
 
     <Button
