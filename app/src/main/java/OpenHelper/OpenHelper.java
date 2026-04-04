@@ -9,17 +9,30 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import Entidad.ParametrosConfig;
 import Entidad.Usuario;
 
 public class OpenHelper extends SQLiteOpenHelper {
 
     //Query para crear tabla usuarios
     public static String usuarioCreacionTable = "CREATE TABLE IF NOT EXISTS usuarios(Email Text primary key, Nombre Text, Contrasenia Text)";
+    public static String configCreacionTable = "CREATE TABLE IF NOT EXISTS parametros_config (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "email_usuario TEXT, " +
+                    "tipo_insulina_rapida TEXT, " +
+                    "tipo_insulina_basal TEXT, " +
+                    "factor_correccion TEXT, " +
+                    "umbral_min TEXT, " +
+                    "umbral_max TEXT, " +
+                    "relacion_insulina_hidratos TEXT, " +
+                    "FOREIGN KEY(email_usuario) REFERENCES usuarios(Email)" +
+                    ")";
 
     public static String usuarioTable = "usuarios";
     public static String usuarioColumnaNombre = "Nombre";
     public static String usuarioColumnaEmail = "Email";
     public static String usuarioColumnaContrasenia = "Contrasenia";
+    private ContentValues valores;
 
     public OpenHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version)
     {
@@ -29,15 +42,16 @@ public class OpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        //Creaeción de tablas
-        String query = usuarioCreacionTable;
-        db.execSQL(query);
+        //Creaeción tabla usuarios
+        db.execSQL(usuarioCreacionTable);
+
+        //Creaeción de tabla parametros_config
+        db.execSQL(configCreacionTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1)
     {
-
     }
 
     //Metodo para dar de alta a los usuarios
@@ -55,7 +69,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         fila.close();
 
         //inserta un nuevo usuario en la tabla de usuarios
-        ContentValues valores = new ContentValues();
+        valores = new ContentValues();
         valores.put(usuarioColumnaEmail, usuario.getEmail());
         valores.put(usuarioColumnaNombre, usuario.getNombre());
         valores.put(usuarioColumnaContrasenia, usuario.getContrasenia());
@@ -78,5 +92,24 @@ public class OpenHelper extends SQLiteOpenHelper {
         fila.close();
 
         return true;
+    }
+
+    //Metodo para dar de alta y guardare la confi guración personalizada del tratamiento
+    public long insertarConfiguracion(ParametrosConfig config)
+    {
+        long resultado;
+
+        valores = new ContentValues();
+        valores.put("email_usuario", config.getEmailUsuario());
+        valores.put("tipo_insulina_rapida", config.getTipoInsulinaRapida());
+        valores.put("tipo_insulina_basal", config.getTipoInsulinaBasal());
+        valores.put("factor_correccion", config.getFactorCorreccion());
+        valores.put("umbral_min", config.getUmbralMinCorreccion());
+        valores.put("umbral_max", config.getUmbralMaxCorreccion());
+        valores.put("relacion_insulina_hidratos", config.getRelacionInsulinaHidratos());
+
+        resultado = this.getWritableDatabase().insert("parametros_config", null, valores);
+
+        return resultado;
     }
 }

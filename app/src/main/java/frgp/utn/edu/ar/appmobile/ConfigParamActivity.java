@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +16,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 
+import Entidad.ParametrosConfig;
 import Entidad.TipoInsulina;
+import Entidad.Usuario;
+import OpenHelper.OpenHelper;
 import adapter.SpinnerTipoInsulinaAdapter;
 
 public class ConfigParamActivity extends AppCompatActivity {
@@ -30,6 +34,8 @@ public class ConfigParamActivity extends AppCompatActivity {
     private ArrayList<TipoInsulina> todas = new ArrayList<>();
     private ArrayList<TipoInsulina> listaR = new ArrayList<>();
     private ArrayList<TipoInsulina> listaB = new ArrayList<>();
+    private ParametrosConfig parametrosConfig;
+    private OpenHelper bd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +53,8 @@ public class ConfigParamActivity extends AppCompatActivity {
         etUmbralMax = findViewById(R.id.etUmbralMax);
         etRelacionInsuHidrato = findViewById(R.id.etRelacionInsuHidrato);
 
-
-        spinnerR =(Spinner)findViewById(R.id.spRapida);
-        spinnerB =(Spinner)findViewById(R.id.spBasal);
+        spinnerR = (Spinner)findViewById(R.id.spRapida);
+        spinnerB = (Spinner)findViewById(R.id.spBasal);
 
         todas.add(new TipoInsulina(1, "Aspartica", "Rapida"));
         todas.add(new TipoInsulina(2, "Lispro", "Rapida"));
@@ -144,6 +149,24 @@ public class ConfigParamActivity extends AppCompatActivity {
 
         if(!validacionesConfig())
         {
+            return;
+        }
+
+        bd = new OpenHelper(this, "DiabeControDB", null, 1);
+        parametrosConfig = new ParametrosConfig();
+        parametrosConfig.setEmailUsuario(getIntent().getStringExtra("email"));
+        parametrosConfig.setTipoInsulinaRapida(spinnerR.getSelectedItem().toString());
+        parametrosConfig.setTipoInsulinaBasal(spinnerB.getSelectedItem().toString());
+        parametrosConfig.setFactorCorreccion(etFactCorreccion.getText().toString());
+        parametrosConfig.setUmbralMinCorreccion(etUmbralMin.getText().toString());
+        parametrosConfig.setUmbralMaxCorreccion(etUmbralMax.getText().toString());
+        parametrosConfig.setRelacionInsulinaHidratos(etRelacionInsuHidrato.getText().toString());
+
+        long resultado = bd.insertarConfiguracion(parametrosConfig);
+
+        if(resultado == -1)
+        {
+            Toast.makeText(this, "Error al guardar configuración", Toast.LENGTH_SHORT).show();
             return;
         }
 

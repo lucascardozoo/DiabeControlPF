@@ -131,6 +131,7 @@ public class RegistroActivity extends AppCompatActivity {
         etEmail.setText("");
         etContrasenia.setText("");
         intent = new Intent(getApplicationContext(), ConfigParamActivity.class);
+        intent.putExtra("email", usuario.getEmail());
         startActivity(intent);
     }
 }
