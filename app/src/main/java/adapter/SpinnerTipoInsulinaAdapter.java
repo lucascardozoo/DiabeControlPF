@@ -50,7 +50,6 @@ public class SpinnerTipoInsulinaAdapter extends ArrayAdapter<TipoInsulina> {
         TextView txtInsulina = view.findViewById(R.id.txtInsulina);
 
         TipoInsulina item = items.get(position);
-
         txtInsulina.setText(item.getNomInsulina());
 
         return view;

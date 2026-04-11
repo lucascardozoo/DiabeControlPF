@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/fila_borde">
+
+    <TextView
+        android:id="@+id/txtFecha"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:padding="6dp"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#BDBDBD"/>
+
+    <TextView
+        android:id="@+id/txtHora"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:padding="6dp"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#BDBDBD"/>
+
+    <TextView
+        android:id="@+id/txtEstAlimenticia"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:padding="6dp"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#BDBDBD"/>
+
+    <TextView
+        android:id="@+id/txtGlucemia"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:padding="6dp"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#BDBDBD"/>
+
+    <TextView
+        android:id="@+id/txtCarbo"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:padding="6dp"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#BDBDBD"/>
+
+    <TextView
+        android:id="@+id/txtInsulina"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:padding="6dp"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#BDBDBD"/>
+
+    <TextView
+        android:id="@+id/txtDescripcion"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:padding="6dp"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
