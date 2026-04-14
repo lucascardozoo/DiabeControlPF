@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import Entidad.ParametrosConfig;
 import Entidad.Usuario;
+import Entidad.Glucemias;
 
 public class OpenHelper extends SQLiteOpenHelper {
 
@@ -27,6 +28,15 @@ public class OpenHelper extends SQLiteOpenHelper {
                     "relacion_insulina_hidratos TEXT, " +
                     "FOREIGN KEY(email_usuario) REFERENCES usuarios(Email)" +
                     ")";
+    public static String glucemiaCreacionTable = "CREATE TABLE IF NOT EXISTS glucemias (" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "email_usuario TEXT, " +
+            "nivel_glucemia TEXT, " +
+            "estacion_alimenticia TEXT, " +
+            "horario TEXT, " +
+            "fecha TEXT, " +
+            "FOREIGN KEY(email_usuario) REFERENCES usuarios(Email)" +
+            ")";
 
     public static String usuarioTable = "usuarios";
     public static String usuarioColumnaNombre = "Nombre";
@@ -47,6 +57,9 @@ public class OpenHelper extends SQLiteOpenHelper {
 
         //Creaeción de tabla parametros_config
         db.execSQL(configCreacionTable);
+
+        //Creaeción de tabla glucemias
+        db.execSQL(glucemiaCreacionTable);
     }
 
     @Override
@@ -94,7 +107,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    //Metodo para dar de alta y guardare la confi guración personalizada del tratamiento
+    //Metodo para dar de alta y guardare la configuración personalizada del tratamiento
     public long insertarConfiguracion(ParametrosConfig config)
     {
         long resultado;
@@ -109,6 +122,23 @@ public class OpenHelper extends SQLiteOpenHelper {
         valores.put("relacion_insulina_hidratos", config.getRelacionInsulinaHidratos());
 
         resultado = this.getWritableDatabase().insert("parametros_config", null, valores);
+
+        return resultado;
+    }
+
+    //Metodo para dar de alta y guardare la registros de glucemias
+    public long insertarGlucemia(Glucemias glucemia)
+    {
+        long resultado;
+
+        valores = new ContentValues();
+        valores.put("email_usuario", glucemia.getEmailUsuario());
+        valores.put("nivel_glucemia", glucemia.getNivelGlucemia());
+        valores.put("estacion_alimenticia", glucemia.getEstacionAlimenticia());
+        valores.put("horario", glucemia.getHorario());
+        valores.put("fecha", glucemia.getFecha());
+
+        resultado = this.getWritableDatabase().insert("glucemias", null, valores);
 
         return resultado;
     }

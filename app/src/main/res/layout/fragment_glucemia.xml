@@ -30,7 +30,7 @@
             android:text="Nivel de glucemia (mg/dL):" />
 
         <EditText
-            android:id="@+id/editTextNumber"
+            android:id="@+id/etNivelGlucemia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -45,7 +45,7 @@
             android:text="Estación alimenticia:" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinnerEstacionAlimenticia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -60,7 +60,7 @@
             android:text="Horario de medición:" />
 
         <EditText
-            android:id="@+id/editTextTime"
+            android:id="@+id/etHorarioDeMedicion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -72,8 +72,8 @@
             android:id="@+id/btnRegistrarGlucemia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:layout_gravity="center"
+            android:layout_marginTop="30dp"
             android:text="Guardar" />
 
     </LinearLayout>

@@ -57,12 +57,14 @@ public class ConfigParamActivity extends AppCompatActivity {
         spinnerR = (Spinner)findViewById(R.id.spRapida);
         spinnerB = (Spinner)findViewById(R.id.spBasal);
 
+        todas.add(new TipoInsulina(0, "Seleccione una opción", "Rapida"));
         todas.add(new TipoInsulina(1, "Aspartica", "Rapida"));
         todas.add(new TipoInsulina(2, "Lispro", "Rapida"));
         todas.add(new TipoInsulina(3, "Regular", "Rapida"));
-        todas.add(new TipoInsulina(4, "Glargina", "Basal"));
-        todas.add(new TipoInsulina(5, "Detemir", "Basal"));
-        todas.add(new TipoInsulina(6, "Degludec", "Basal"));
+        todas.add(new TipoInsulina(0, "Seleccione una opción", "Basal"));
+        todas.add(new TipoInsulina(1, "Glargina", "Basal"));
+        todas.add(new TipoInsulina(2, "Detemir", "Basal"));
+        todas.add(new TipoInsulina(3, "Degludec", "Basal"));
 
         for(TipoInsulina i : todas){
             if(i.getTipoInsulina().equals("Rapida")){
@@ -83,6 +85,16 @@ public class ConfigParamActivity extends AppCompatActivity {
         etUmbralMin.setError(null);
         etUmbralMax.setError(null);
         etRelacionInsuHidrato.setError(null);
+
+        // Validacion spinner
+        if (spinnerR.getSelectedItemPosition() == 0) {
+            estado = false;
+            Toast.makeText(this, "Seleccione un tipo de insulina rapida", Toast.LENGTH_SHORT).show();
+        }
+        if (spinnerB.getSelectedItemPosition() == 0) {
+            estado = false;
+            Toast.makeText(this, "Seleccione un tipo de insulina basal", Toast.LENGTH_SHORT).show();
+        }
 
         // Validacion del factor de corrección
         if (etFactCorreccion.getText().toString().isEmpty())
@@ -175,6 +187,7 @@ public class ConfigParamActivity extends AppCompatActivity {
         etUmbralMax.setText("");
         etRelacionInsuHidrato.setText("");
         intent = new Intent(getApplicationContext(), PrincipalActivity.class);
+        intent.putExtra("email", getIntent().getStringExtra("email"));
         startActivity(intent);
     }
 }

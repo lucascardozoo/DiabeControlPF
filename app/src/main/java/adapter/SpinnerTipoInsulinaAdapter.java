@@ -45,7 +45,7 @@ public class SpinnerTipoInsulinaAdapter extends ArrayAdapter<TipoInsulina> {
         View view = convertView;
         if (view == null) {
             view = LayoutInflater.from(getContext())
-                    .inflate(R.layout.spinner_item_template, parent, false);
+                    .inflate(R.layout.sp_it_tipo_insulina, parent, false);
         }
         TextView txtInsulina = view.findViewById(R.id.txtInsulina);
 

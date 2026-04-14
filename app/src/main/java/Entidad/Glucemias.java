@@ -1,23 +1,69 @@
 package Entidad;
 public class Glucemias {
-    private int glucemia;
-    private String estAlimenticia;
+    private String emailUsuario;
+    private String nivelGlucemia;
+    private String estacionAlimenticia;
+    private String horario;
+    private String fecha;
+
     public Glucemias(){
     }
-    public Glucemias(int glucemia, String estAlimenticia) {
-        this.glucemia = glucemia;
-        this.estAlimenticia = estAlimenticia;
+    public Glucemias(String emailUsuario, String nivelGlucemia, String estacionAlimenticia, String horario, String fecha) {
+        this.emailUsuario = emailUsuario;
+        this.nivelGlucemia = nivelGlucemia;
+        this.estacionAlimenticia = estacionAlimenticia;
+        this.horario = horario;
+        this.fecha = fecha;
     }
-    public int getGlucemia() {
-        return glucemia;
+
+    public String getEmailUsuario() {
+        return emailUsuario;
     }
-    public void setGlucemia(int glucemia) {
-        this.glucemia = glucemia;
+
+    public void setEmailUsuario(String emailUsuario) {
+        this.emailUsuario = emailUsuario;
     }
-    public String getEstAlimenticia() {
-        return estAlimenticia;
+
+    public String getNivelGlucemia() {
+        return nivelGlucemia;
     }
-    public void setEstAlimenticia(String estAlimenticia) {
-        this.estAlimenticia = estAlimenticia;
+
+    public void setNivelGlucemia(String nivelGlucemia) {
+        this.nivelGlucemia = nivelGlucemia;
+    }
+
+    public String getEstacionAlimenticia() {
+        return estacionAlimenticia;
+    }
+
+    public void setEstacionAlimenticia(String estacionAlimenticia) {
+        this.estacionAlimenticia = estacionAlimenticia;
+    }
+
+    public String getHorario() {
+        return horario;
+    }
+
+    public void setHorario(String horario) {
+        this.horario = horario;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    @Override
+    public String toString() {
+        return "Glucemias{" +
+                "emailUsuario='" + emailUsuario + '\'' +
+                ", nivelGlucemia='" + nivelGlucemia + '\'' +
+                ", estacionAlimenticia='" + estacionAlimenticia + '\'' +
+                ", horario='" + horario + '\'' +
+                ", fecha='" + fecha + '\'' +
+                '}';
     }
 }
