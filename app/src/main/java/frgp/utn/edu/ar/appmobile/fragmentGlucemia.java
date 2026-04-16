@@ -1,8 +1,10 @@
 package frgp.utn.edu.ar.appmobile;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +31,7 @@ public class fragmentGlucemia extends Fragment {
     private OpenHelper bd;
     private ArrayList<EstacionAlimenticia> lista = new ArrayList<>();
 
-
-    public fragmentGlucemia() {
-    }
+    public fragmentGlucemia() {}
 
     public static fragmentGlucemia newInstance(String param1, String param2) {
         fragmentGlucemia fragment = new fragmentGlucemia();
@@ -58,8 +58,11 @@ public class fragmentGlucemia extends Fragment {
         spinnerEstacionAlimenticia = (Spinner)view.findViewById(R.id.spinnerEstacionAlimenticia);
 
         lista.add(new EstacionAlimenticia(0, "Seleccione una estación alimenticia"));
-        lista.add(new EstacionAlimenticia(1, "Elemento 1"));
-        lista.add(new EstacionAlimenticia(2, "Elemento 2"));
+        lista.add(new EstacionAlimenticia(1, "Desayuno"));
+        lista.add(new EstacionAlimenticia(2, "Almuerzo"));
+        lista.add(new EstacionAlimenticia(3, "Merienda"));
+        lista.add(new EstacionAlimenticia(4, "Cena"));
+        lista.add(new EstacionAlimenticia(5, "Otros"));
 
         SpinnerEstacionAlimenticia adapter = new SpinnerEstacionAlimenticia(requireContext(), lista);
         spinnerEstacionAlimenticia.setAdapter(adapter);
@@ -101,10 +104,8 @@ public class fragmentGlucemia extends Fragment {
     }
 
     public void eventoBtnGuardarGlucemia(View view) {
-        if(!validaciones())
-        {
-            return;
-        }
+
+        if(!validaciones()) {return;}
 
         String fechaActual;
         long resultado;
@@ -135,6 +136,7 @@ public class fragmentGlucemia extends Fragment {
             etNivelGlucemia.setText("");
             etHorarioDeMedicion.setText("");
             Toast.makeText(getContext(), "Glucemia registrada correctamente", Toast.LENGTH_SHORT).show();
+            ((PrincipalActivity)getActivity()).irATabComida();
         }
     }
 }

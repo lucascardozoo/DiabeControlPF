@@ -5,10 +5,34 @@
     android:layout_height="match_parent"
     tools:context=".fragmentComida">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="FRAGMENTO DONDE EL USUARIO VA A REGISTRAR LA COMIDA A CONSUMIR O CONSUMIDA" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtRegistroComida"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registrar Comida"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+
+
+
+
+        <Button
+            android:id="@+id/btnRegistrarComida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="Guardar" />
+
+    </LinearLayout>
 
 </FrameLayout>

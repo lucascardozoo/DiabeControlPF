@@ -15,7 +15,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import adapter.TabAdapterViewPager;
 
 public class PrincipalActivity extends AppCompatActivity {
-
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
     @Override
@@ -34,10 +33,19 @@ public class PrincipalActivity extends AppCompatActivity {
         TabAdapterViewPager adapterTab = new TabAdapterViewPager(this);
         viewPager2.setAdapter(adapterTab);
 
-        final String[] titles = new String[]{"Glucemia", "Comida", "Historial"};
+        final String[] titles = new String[]{"Glucemia", "Comida", "Asistente", "Historial"};
 
         new TabLayoutMediator(tabLayout, viewPager2,
                 (tab, position) -> tab.setText(titles[position])
         ).attach();
+    }
+
+    public void irATabComida(){
+        viewPager2 = findViewById(R.id.tabViewPager);
+        viewPager2.setCurrentItem(1);
+    }
+    public void irATabAsistente(){
+        viewPager2 = findViewById(R.id.tabViewPager);
+        viewPager2.setCurrentItem(2);
     }
 }

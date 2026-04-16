@@ -106,6 +106,9 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+
+
     public void eventoBtnRegistrarse(View view) {
         intent = new Intent(getApplicationContext(), RegistroActivity.class);
         startActivity(intent);

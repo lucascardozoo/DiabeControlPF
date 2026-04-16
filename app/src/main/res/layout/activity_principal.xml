@@ -29,6 +29,12 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/tabItemAsistente"
+            android:text="Asistente" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/tabItemHistorial"
             android:text="Historial" />
     </com.google.android.material.tabs.TabLayout>
