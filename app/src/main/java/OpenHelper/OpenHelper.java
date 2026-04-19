@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import Entidad.Comidas;
 import Entidad.ParametrosConfig;
 import Entidad.Usuario;
 import Entidad.Glucemias;
@@ -38,6 +39,13 @@ public class OpenHelper extends SQLiteOpenHelper {
             "FOREIGN KEY(email_usuario) REFERENCES usuarios(Email)" +
             ")";
 
+    public static String comidaCreacionTable = "CREATE TABLE IF NOT EXISTS comidas (" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "email_usuario TEXT, " +
+            "carbohidratos TEXT, " +
+            "descripcion TEXT, " +
+            "FOREIGN KEY(email_usuario) REFERENCES usuarios(Email)" +
+            ")";
     public static String usuarioTable = "usuarios";
     public static String usuarioColumnaNombre = "Nombre";
     public static String usuarioColumnaEmail = "Email";
@@ -60,6 +68,9 @@ public class OpenHelper extends SQLiteOpenHelper {
 
         //Creaeción de tabla glucemias
         db.execSQL(glucemiaCreacionTable);
+
+        //Creación tabla comidas
+        db.execSQL(comidaCreacionTable);
     }
 
     @Override
@@ -107,7 +118,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    //Metodo para dar de alta y guardare la configuración personalizada del tratamiento
+    //Metodo para dar de alta y guardar la configuración personalizada del tratamiento
     public long insertarConfiguracion(ParametrosConfig config)
     {
         long resultado;
@@ -126,7 +137,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         return resultado;
     }
 
-    //Metodo para dar de alta y guardare la registros de glucemias
+    //Metodo para dar de alta y guardar los registros de glucemias
     public long insertarGlucemia(Glucemias glucemia)
     {
         long resultado;
@@ -139,6 +150,20 @@ public class OpenHelper extends SQLiteOpenHelper {
         valores.put("fecha", glucemia.getFecha());
 
         resultado = this.getWritableDatabase().insert("glucemias", null, valores);
+
+        return resultado;
+    }
+
+    public long insertarComida(Comidas comida){
+
+        long resultado;
+
+        valores = new ContentValues();
+        valores.put("email_usuario", comida.getEmailUsuario());
+        valores.put("carbohidratos", comida.getCantCarbohidratos());
+        valores.put("descripcion", comida.getDescripcion());
+
+        resultado = this.getWritableDatabase().insert("comidas", null, valores);
 
         return resultado;
     }

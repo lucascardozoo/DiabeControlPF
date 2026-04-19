@@ -39,7 +39,6 @@ public class Glucemias {
     public void setEstacionAlimenticia(String estacionAlimenticia) {
         this.estacionAlimenticia = estacionAlimenticia;
     }
-
     public String getHorario() {
         return horario;
     }

@@ -2,6 +2,7 @@ package frgp.utn.edu.ar.appmobile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -165,9 +166,21 @@ public class ConfigParamActivity extends AppCompatActivity {
             return;
         }
 
-        bd = new OpenHelper(this, "DiabeControDB", null, 1);
+        bd = new OpenHelper(this, "DiabeControlDB", null, 1);
         parametrosConfig = new ParametrosConfig();
-        parametrosConfig.setEmailUsuario(getIntent().getStringExtra("email"));
+
+        //Obtener email desde SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("usuario", MODE_PRIVATE);
+        String email = prefs.getString("email", null);
+
+        //Validación importante
+        if(email == null)
+        {
+            Toast.makeText(this, "Error: usuario no identificado", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        parametrosConfig.setEmailUsuario(email);
         parametrosConfig.setTipoInsulinaRapida(spinnerR.getSelectedItem().toString());
         parametrosConfig.setTipoInsulinaBasal(spinnerB.getSelectedItem().toString());
         parametrosConfig.setFactorCorreccion(etFactCorreccion.getText().toString());
@@ -182,12 +195,20 @@ public class ConfigParamActivity extends AppCompatActivity {
             Toast.makeText(this, "Error al guardar configuración", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        //Limpiar campos
         etFactCorreccion.setText("");
         etUmbralMin.setText("");
         etUmbralMax.setText("");
         etRelacionInsuHidrato.setText("");
+
+        Toast.makeText(this, "Configuración guardada correctamente", Toast.LENGTH_SHORT).show();
+
+        //Ir a la pantalla principal
         intent = new Intent(getApplicationContext(), PrincipalActivity.class);
-        intent.putExtra("email", getIntent().getStringExtra("email"));
         startActivity(intent);
+
+        // (opcional pero recomendado)
+        finish();
     }
 }

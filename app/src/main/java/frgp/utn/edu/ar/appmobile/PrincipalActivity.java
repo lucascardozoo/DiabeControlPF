@@ -39,13 +39,8 @@ public class PrincipalActivity extends AppCompatActivity {
                 (tab, position) -> tab.setText(titles[position])
         ).attach();
     }
-
-    public void irATabComida(){
-        viewPager2 = findViewById(R.id.tabViewPager);
-        viewPager2.setCurrentItem(1);
-    }
+    public void irATabComida(){viewPager2.setCurrentItem(1);}
     public void irATabAsistente(){
-        viewPager2 = findViewById(R.id.tabViewPager);
         viewPager2.setCurrentItem(2);
     }
 }

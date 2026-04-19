@@ -1,6 +1,8 @@
 package frgp.utn.edu.ar.appmobile;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -105,18 +107,28 @@ public class fragmentGlucemia extends Fragment {
 
     public void eventoBtnGuardarGlucemia(View view) {
 
-        if(!validaciones()) {return;}
+        if(!validaciones()) { return; }
 
         String fechaActual;
         long resultado;
 
-        bd = new OpenHelper(requireContext(), "DiabeControDB", null, 1);
+        bd = new OpenHelper(requireContext(), "DiabeControlDB", null, 1);
         Glucemias glucemia = new Glucemias();
 
-        // Email del usuario logueado
-        glucemia.setEmailUsuario(requireActivity().getIntent().getStringExtra("email"));
+        //Obtener email desde SharedPreferences
+        SharedPreferences prefs = requireActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
+        String email = prefs.getString("email", null);
 
-        // Datos de los controles
+        //Validación importante
+        if(email == null)
+        {
+            Toast.makeText(getContext(), "Error: usuario no identificado", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        glucemia.setEmailUsuario(email);
+
+        // Datos
         glucemia.setNivelGlucemia(etNivelGlucemia.getText().toString());
         glucemia.setEstacionAlimenticia(spinnerEstacionAlimenticia.getSelectedItem().toString());
         glucemia.setHorario(etHorarioDeMedicion.getText().toString());
@@ -131,12 +143,16 @@ public class fragmentGlucemia extends Fragment {
         {
             Toast.makeText(getContext(), "Error al registrar glucemia", Toast.LENGTH_SHORT).show();
         }
-        else
-        {
+        else {
             etNivelGlucemia.setText("");
             etHorarioDeMedicion.setText("");
             Toast.makeText(getContext(), "Glucemia registrada correctamente", Toast.LENGTH_SHORT).show();
-            ((PrincipalActivity)getActivity()).irATabComida();
+
+            //Verificación extra (evita crash raro)
+            if(getActivity() instanceof PrincipalActivity)
+            {
+                ((PrincipalActivity)getActivity()).irATabComida();
+            }
         }
     }
 }

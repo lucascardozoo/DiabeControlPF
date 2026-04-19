@@ -1,6 +1,7 @@
 package frgp.utn.edu.ar.appmobile;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -83,35 +84,41 @@ public class LoginActivity extends AppCompatActivity {
 
     public void eventoBtnIniciarSesion(View view) {
 
-        // Invocacion de funcion validaciones
-        // Si devuelve false, el boton no redirecciona a la pantalla principal
+        // Validaciones
         if (!validaciones())
         {
             return;
         }
 
-        bd = new OpenHelper(this, "DiabeControDB", null, 1);
+        bd = new OpenHelper(this, "DiabeControlDB", null, 1);
         usuario = new Usuario();
-        usuario.setEmail(etEmail.getText().toString());
-        usuario.setContrasenia(etContrasenia.getText().toString());
+
+        String email = etEmail.getText().toString();
+        String contrasenia = etContrasenia.getText().toString();
+
+        usuario.setEmail(email);
+        usuario.setContrasenia(contrasenia);
+
         if(!bd.buscarUsuario(usuario))
         {
             Toast.makeText(this, "Email y/o contraseña incorrecta", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        //Guardar email correctamente
+        SharedPreferences prefs = getSharedPreferences("usuario", MODE_PRIVATE);
+        prefs.edit().putString("email", email).apply();
+
+        //Limpiar campos DESPUÉS de guardar el valor
         etEmail.setText("");
         etContrasenia.setText("");
+
+        //NO mandamos más el email por intent
         intent = new Intent(getApplicationContext(), PrincipalActivity.class);
         startActivity(intent);
     }
-
-
-
-
     public void eventoBtnRegistrarse(View view) {
         intent = new Intent(getApplicationContext(), RegistroActivity.class);
         startActivity(intent);
     }
-
 }

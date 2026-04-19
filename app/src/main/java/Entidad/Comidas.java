@@ -1,14 +1,18 @@
 package Entidad;
-
 public class Comidas {
+    private String emailUsuario;
     private String descripcion;
-    private int cantCarbohidratos;
+    private String cantCarbohidratos;
 
     public Comidas(){
     }
-    public Comidas(String descripcion, int cantCarbohidratos) {
+    public Comidas(String descripcion, String cantCarbohidratos) {
         this.descripcion = descripcion;
         this.cantCarbohidratos = cantCarbohidratos;
+    }
+    public String getEmailUsuario() {return emailUsuario;}
+    public void setEmailUsuario(String emailUsuario) {
+        this.emailUsuario = emailUsuario;
     }
     public String getDescripcion() {
         return descripcion;
@@ -16,10 +20,17 @@ public class Comidas {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    public int getCantCarbohidratos() {
+    public String getCantCarbohidratos() {
         return cantCarbohidratos;
     }
-    public void setCantCarbohidratos(int cantCarbohidratos) {
-        this.cantCarbohidratos = cantCarbohidratos;
+    public void setCantCarbohidratos(String cantCarbohidratos) {this.cantCarbohidratos = cantCarbohidratos;
+    }
+    @Override
+    public String toString() {
+        return "Comidas{" +
+                "emailUsuario='" + emailUsuario + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", cantCarbohidratos=" + cantCarbohidratos +
+                '}';
     }
 }

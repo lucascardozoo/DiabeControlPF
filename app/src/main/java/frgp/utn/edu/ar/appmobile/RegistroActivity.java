@@ -1,6 +1,7 @@
 package frgp.utn.edu.ar.appmobile;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CpuUsageInfo;
 import android.util.Patterns;
@@ -100,6 +101,7 @@ public class RegistroActivity extends AppCompatActivity {
         return estado;
     }
     public void eventoBtnNuevoRegistro(View view) {
+
         long resultado;
 
         if(!validacionesRegistro())
@@ -107,31 +109,41 @@ public class RegistroActivity extends AppCompatActivity {
             return;
         }
 
-        bd = new OpenHelper(this, "DiabeControDB", null, 1);
+        bd = new OpenHelper(this, "DiabeControlDB", null, 1);
         usuario = new Usuario();
-        usuario.setNombre(etNombre.getText().toString());
-        usuario.setEmail(etEmail.getText().toString());
-        usuario.setContrasenia(etContrasenia.getText().toString());
+
+        String email = etEmail.getText().toString();
+        String nombre = etNombre.getText().toString();
+        String contrasenia = etContrasenia.getText().toString();
+
+        usuario.setNombre(nombre);
+        usuario.setEmail(email);
+        usuario.setContrasenia(contrasenia);
+
         resultado = bd.insertarUsuario(usuario);
+
         if(resultado == -2)
         {
             Toast.makeText(this, "Email ya registrado", Toast.LENGTH_SHORT).show();
             return;
         }
-        else
+        else if(resultado == -1)
         {
-            if(resultado == -1)
-            {
-                Toast.makeText(this, "Error al registrar usuario", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            Toast.makeText(this, "Error al registrar usuario", Toast.LENGTH_SHORT).show();
+            return;
         }
 
+        //Guardar email en SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("usuario", MODE_PRIVATE);
+        prefs.edit().putString("email", email).apply();
+
+        //Limpiar campos
         etNombre.setText("");
         etEmail.setText("");
         etContrasenia.setText("");
+
+        //Ir a configuración (SIN pasar email por intent)
         intent = new Intent(getApplicationContext(), ConfigParamActivity.class);
-        intent.putExtra("email", usuario.getEmail());
         startActivity(intent);
     }
 }
