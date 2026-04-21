@@ -75,6 +75,7 @@ public class fragmentComida extends Fragment {
         }
 
         long resultado;
+        long idGlucemia;
 
         bd = new OpenHelper(requireContext(), "DiabeControlDB", null, 1);
         Comidas comida = new Comidas();
@@ -90,11 +91,14 @@ public class fragmentComida extends Fragment {
             return;
         }
 
-        comida.setEmailUsuario(email);
-
         // Datos
+        comida.setEmailUsuario(email);
         comida.setDescripcion(txtInputEt.getText().toString());
         comida.setCantCarbohidratos(etCantCarbohidratos.getText().toString());
+
+        prefs = requireActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
+        idGlucemia = prefs.getLong("id_glucemia", -1);
+        comida.setIdGlucemia(idGlucemia);
 
         resultado = bd.insertarComida(comida);
 

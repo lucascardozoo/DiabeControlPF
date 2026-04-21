@@ -9,7 +9,10 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+
 import Entidad.Comidas;
+import Entidad.Historial;
 import Entidad.ParametrosConfig;
 import Entidad.Usuario;
 import Entidad.Glucemias;
@@ -38,14 +41,16 @@ public class OpenHelper extends SQLiteOpenHelper {
             "fecha TEXT, " +
             "FOREIGN KEY(email_usuario) REFERENCES usuarios(Email)" +
             ")";
-
     public static String comidaCreacionTable = "CREATE TABLE IF NOT EXISTS comidas (" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "email_usuario TEXT, " +
             "carbohidratos TEXT, " +
             "descripcion TEXT, " +
-            "FOREIGN KEY(email_usuario) REFERENCES usuarios(Email)" +
+            "id_glucemia INTEGER, " +
+            "FOREIGN KEY(email_usuario) REFERENCES usuarios(Email), " +
+            "FOREIGN KEY(id_glucemia) REFERENCES glucemias(id) ON DELETE CASCADE" +
             ")";
+
     public static String usuarioTable = "usuarios";
     public static String usuarioColumnaNombre = "Nombre";
     public static String usuarioColumnaEmail = "Email";
@@ -55,6 +60,12 @@ public class OpenHelper extends SQLiteOpenHelper {
     public OpenHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version)
     {
         super(context, name, factory, version);
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        db.execSQL("PRAGMA foreign_keys=ON;");
     }
 
     @Override
@@ -154,6 +165,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         return resultado;
     }
 
+    //Metodo para dar de alta y guardar los registros de comidas
     public long insertarComida(Comidas comida){
 
         long resultado;
@@ -162,9 +174,46 @@ public class OpenHelper extends SQLiteOpenHelper {
         valores.put("email_usuario", comida.getEmailUsuario());
         valores.put("carbohidratos", comida.getCantCarbohidratos());
         valores.put("descripcion", comida.getDescripcion());
+        valores.put("id_glucemia", comida.getIdGlucemia());
 
         resultado = this.getWritableDatabase().insert("comidas", null, valores);
 
         return resultado;
     }
+
+    //Metodo para consultar glucemias y comidas registradas (Historial)
+    public ArrayList<Historial> obtenerHistorial(String email)
+    {
+        ArrayList<Historial> lista = new ArrayList<>();
+
+        String query = "SELECT g.fecha, g.horario, g.estacion_alimenticia, g.nivel_glucemia, " +
+                "c.carbohidratos, c.descripcion " +
+                "FROM glucemias g " +
+                "INNER JOIN comidas c ON g.id = c.id_glucemia " +
+                "WHERE g.email_usuario = ? " +
+                "ORDER BY g.fecha DESC, g.horario DESC";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{email});
+
+        if(cursor.moveToFirst())
+        {
+            do {
+                Historial h = new Historial();
+
+                h.setFecha(cursor.getString(0));
+                h.setHora(cursor.getString(1));
+                h.setEstAlimenticia(cursor.getString(2));
+                h.setGlucemia(cursor.getString(3));
+                h.setCarbohidratos(cursor.getString(4));
+                h.setDescripcion(cursor.getString(5));
+                h.setInsulina("0");
+
+                lista.add(h);
+
+            } while (cursor.moveToNext());
+        }
+        return lista;
+    }
+
 }

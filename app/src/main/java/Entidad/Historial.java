@@ -6,15 +6,15 @@ public class Historial {
     private String fecha;
     private String hora;
     private String estAlimenticia;
-    private int glucemia;
-    private int carbohidratos;
-    private int insulina;
+    private String glucemia;
+    private String carbohidratos;
+    private String insulina;
     private String descripcion;
+
     public Historial() {
     }
-    public Historial(String fecha, String hora, String estAlimenticia,
-                     int glucemia, int carbohidratos,
-                     int insulina, String descripcion) {
+
+    public Historial(String fecha, String hora, String estAlimenticia, String glucemia, String carbohidratos, String insulina, String descripcion) {
         this.fecha = fecha;
         this.hora = hora;
         this.estAlimenticia = estAlimenticia;
@@ -48,27 +48,27 @@ public class Historial {
         this.estAlimenticia = estAlimenticia;
     }
 
-    public int getGlucemia() {
+    public String getGlucemia() {
         return glucemia;
     }
 
-    public void setGlucemia(int glucemia) {
+    public void setGlucemia(String glucemia) {
         this.glucemia = glucemia;
     }
 
-    public int getCarbohidratos() {
+    public String getCarbohidratos() {
         return carbohidratos;
     }
 
-    public void setCarbohidratos(int carbohidratos) {
+    public void setCarbohidratos(String carbohidratos) {
         this.carbohidratos = carbohidratos;
     }
 
-    public int getInsulina() {
+    public String getInsulina() {
         return insulina;
     }
 
-    public void setInsulina(int insulina) {
+    public void setInsulina(String insulina) {
         this.insulina = insulina;
     }
 
@@ -78,5 +78,18 @@ public class Historial {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @Override
+    public String toString() {
+        return "Historial{" +
+                "fecha='" + fecha + '\'' +
+                ", hora='" + hora + '\'' +
+                ", estAlimenticia='" + estAlimenticia + '\'' +
+                ", glucemia='" + glucemia + '\'' +
+                ", carbohidratos='" + carbohidratos + '\'' +
+                ", insulina='" + insulina + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                '}';
     }
 }

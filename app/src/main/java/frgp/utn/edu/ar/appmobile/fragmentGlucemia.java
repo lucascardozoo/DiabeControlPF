@@ -110,7 +110,7 @@ public class fragmentGlucemia extends Fragment {
         if(!validaciones()) { return; }
 
         String fechaActual;
-        long resultado;
+        long idGlucemia;
 
         bd = new OpenHelper(requireContext(), "DiabeControlDB", null, 1);
         Glucemias glucemia = new Glucemias();
@@ -130,20 +130,28 @@ public class fragmentGlucemia extends Fragment {
 
         // Datos
         glucemia.setNivelGlucemia(etNivelGlucemia.getText().toString());
-        glucemia.setEstacionAlimenticia(spinnerEstacionAlimenticia.getSelectedItem().toString());
+
+        EstacionAlimenticia est = (EstacionAlimenticia) spinnerEstacionAlimenticia.getSelectedItem();
+        glucemia.setEstacionAlimenticia(est.getEstacionAlimenticia());
+
         glucemia.setHorario(etHorarioDeMedicion.getText().toString());
 
         // Fecha automática
         fechaActual = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
         glucemia.setFecha(fechaActual);
 
-        resultado = bd.insertarGlucemia(glucemia);
+        idGlucemia = bd.insertarGlucemia(glucemia);
 
-        if(resultado == -1)
+        if(idGlucemia == -1)
         {
             Toast.makeText(getContext(), "Error al registrar glucemia", Toast.LENGTH_SHORT).show();
         }
         else {
+            prefs = requireActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putLong("id_glucemia", idGlucemia);
+            editor.apply();
+
             etNivelGlucemia.setText("");
             etHorarioDeMedicion.setText("");
             Toast.makeText(getContext(), "Glucemia registrada correctamente", Toast.LENGTH_SHORT).show();
