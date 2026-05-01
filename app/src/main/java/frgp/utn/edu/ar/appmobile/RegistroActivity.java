@@ -146,4 +146,10 @@ public class RegistroActivity extends AppCompatActivity {
         intent = new Intent(getApplicationContext(), ConfigParamActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        bd.close();
+    }
 }

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import Entidad.Comidas;
 import Entidad.Historial;
 import Entidad.ParametrosConfig;
+import Entidad.RegistrosParaAsistente;
 import Entidad.Usuario;
 import Entidad.Glucemias;
 
@@ -181,6 +182,37 @@ public class OpenHelper extends SQLiteOpenHelper {
         return resultado;
     }
 
+    //Metodo para consultar registros para el asistente
+    public RegistrosParaAsistente obtenerRegistros(String email){
+
+        RegistrosParaAsistente rg = null;
+
+        String query = "SELECT g.estacion_alimenticia, g.nivel_glucemia, c.carbohidratos, " +
+                "config.factor_correccion, config.relacion_insulina_hidratos " +
+                "FROM comidas c " +
+                "LEFT JOIN glucemias g ON g.id = c.id_glucemia " +
+                "LEFT JOIN parametros_config config ON g.email_usuario = config.email_usuario " +
+                "WHERE g.email_usuario = ? " +
+                "ORDER BY c.id DESC LIMIT 1";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{email});
+
+        if(cursor.moveToFirst())
+        {
+            rg = new RegistrosParaAsistente();
+
+            rg.setEstAlimenticia(cursor.getString(0));
+            rg.setGlucemia(cursor.getString(1));
+            rg.setCarbohidratos(cursor.getString(2));
+            rg.setFactorCorreccion(cursor.getString(3));
+            rg.setRelacionInsulinaHidratos(cursor.getString(4));
+        }
+        cursor.close();
+        db.close();
+        return rg;
+    }
+
     //Metodo para consultar glucemias y comidas registradas (Historial)
     public ArrayList<Historial> obtenerHistorial(String email)
     {
@@ -213,6 +245,8 @@ public class OpenHelper extends SQLiteOpenHelper {
 
             } while (cursor.moveToNext());
         }
+        db.close();
+        cursor.close();
         return lista;
     }
 

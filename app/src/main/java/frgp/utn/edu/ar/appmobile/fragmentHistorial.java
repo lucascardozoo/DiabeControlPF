@@ -56,6 +56,14 @@ public class fragmentHistorial extends Fragment {
         GridViewAdapter adapter = new GridViewAdapter(getContext(),items);
         gridView = view.findViewById(R.id.gvHistorial);
         gridView.setAdapter(adapter);
+
         return view;
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (bd != null){
+            bd.close();
+        }
     }
 }

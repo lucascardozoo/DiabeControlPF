@@ -163,4 +163,11 @@ public class fragmentGlucemia extends Fragment {
             }
         }
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (bd != null){
+            bd.close();
+        }
+    }
 }

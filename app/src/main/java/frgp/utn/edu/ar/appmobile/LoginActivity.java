@@ -116,9 +116,16 @@ public class LoginActivity extends AppCompatActivity {
         //NO mandamos más el email por intent
         intent = new Intent(getApplicationContext(), PrincipalActivity.class);
         startActivity(intent);
+
     }
     public void eventoBtnRegistrarse(View view) {
         intent = new Intent(getApplicationContext(), RegistroActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        bd.close();
     }
 }

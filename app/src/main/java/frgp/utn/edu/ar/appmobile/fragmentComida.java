@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.io.ObjectInputStream;
 
 import Entidad.Comidas;
 import OpenHelper.OpenHelper;
@@ -116,6 +119,13 @@ public class fragmentComida extends Fragment {
             if(getActivity() instanceof PrincipalActivity){
                 ((PrincipalActivity)getActivity()).irATabAsistente();
             }
+        }
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (bd != null){
+            bd.close();
         }
     }
 }

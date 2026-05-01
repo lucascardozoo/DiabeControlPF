@@ -211,4 +211,9 @@ public class ConfigParamActivity extends AppCompatActivity {
         // (opcional pero recomendado)
         finish();
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        bd.close();
+    }
 }
