@@ -11,7 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import Entidad.Historial;
 import OpenHelper.OpenHelper;
@@ -40,25 +43,53 @@ public class fragmentHistorial extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_historial, container, false);
+
+        gridView = view.findViewById(R.id.gvHistorial);
 
         bd = new OpenHelper(getContext(), "DiabeControlDB", null, 1);
 
-        // Obtenemos email
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(bd == null){
+            bd = new OpenHelper(getContext(), "DiabeControlDB", null, 1);
+        }
+
         SharedPreferences prefs = requireActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
         String email = prefs.getString("email", null);
 
         if(email != null)
         {
-            items = bd.obtenerHistorial(email);
+            items.clear();
+            items.addAll(bd.obtenerHistorial(email));
+
+            for (Historial h : items) {
+                try {
+                    SimpleDateFormat origen = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    SimpleDateFormat destino = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
+                    Date fecha = origen.parse(h.getFecha());
+
+                    if(fecha != null){
+                        h.setFecha(destino.format(fecha));
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            GridViewAdapter adapter = new GridViewAdapter(getContext(), items);
+            gridView.setAdapter(adapter);
         }
-
-        GridViewAdapter adapter = new GridViewAdapter(getContext(),items);
-        gridView = view.findViewById(R.id.gvHistorial);
-        gridView.setAdapter(adapter);
-
-        return view;
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

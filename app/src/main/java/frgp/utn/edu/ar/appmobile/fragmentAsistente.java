@@ -1,6 +1,7 @@
 package frgp.utn.edu.ar.appmobile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -11,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import Entidad.DosisResultado;
 import Entidad.RegistrosParaAsistente;
 import OpenHelper.OpenHelper;
 
@@ -28,6 +31,7 @@ public class fragmentAsistente extends Fragment {
     private TextView txtDosisCorreccionR;
     private TextView txtDosisFinal;
     RegistrosParaAsistente registro;
+    Intent intent;
 
     public fragmentAsistente() {}
     public static fragmentAsistente newInstance(String param1, String param2) {
@@ -60,8 +64,8 @@ public class fragmentAsistente extends Fragment {
         txtDosisCorreccionR = view.findViewById(R.id.txtDosisCorrecionR);
         txtDosisFinal = view.findViewById(R.id.txtDosisFinal);
 
-        Button btnGuardar = view.findViewById(R.id.btnCalcular);
-        btnGuardar.setOnClickListener(this::eventoBtnCalcular);
+        Button btnConfig = view.findViewById(R.id.btnConfigParam);
+        btnConfig.setOnClickListener(v -> eventoRedireccionConfigParam(v));
 
         return view;
     }
@@ -74,16 +78,74 @@ public class fragmentAsistente extends Fragment {
         String email = prefs.getString("email", null);
 
         if(email != null){
+
             registro = bd.obtenerRegistros(email);
 
-            if(registro != null){
+            if(registro != null && registro.getFactorCorreccion() != null && registro.getRelacionInsulinaHidratos() != null && registro.getUmbralMin() != null && registro.getUmbralMax() != null){
                 txtGlucemiaR.setText(registro.getGlucemia());
                 txtComidaR.setText(registro.getCarbohidratos());
                 txtEstAlimenticiaR.setText(registro.getEstAlimenticia());
                 txtRelacionInsuHidrato.setText(registro.getRelacionInsulinaHidratos());
                 txtFactorCorreccionR.setText(registro.getFactorCorreccion());
+
+                DosisResultado dosis = calcularDosis(registro);
+
+                bd.actualizarDosis( registro.getIdGlucemia(), String.valueOf(dosis.getDosisTotal()), String.valueOf(dosis.getDosisCarbo()), String.valueOf(dosis.getDosisCorreccion()));
+
+                txtDosisCarboR.setText(String.format("%.2f", dosis.getDosisCarbo()));
+                txtDosisCorreccionR.setText(String.format("%.2f", dosis.getDosisCorreccion()));
+                txtDosisFinal.setText(String.format("%.2f", dosis.getDosisTotal()));
+
             }
         }
+
+    }
+
+    private DosisResultado calcularDosis(RegistrosParaAsistente registro) {
+
+        DosisResultado resultado = new DosisResultado();
+
+        try {
+
+            double glucemia = Double.parseDouble(registro.getGlucemia());
+            double carbohidratos = Double.parseDouble(registro.getCarbohidratos());
+
+            double factorCorreccion = Double.parseDouble(registro.getFactorCorreccion());
+            double relacion = Double.parseDouble(registro.getRelacionInsulinaHidratos());
+
+            double umbralMin = Double.parseDouble(registro.getUmbralMin());
+            double umbralMax = Double.parseDouble(registro.getUmbralMax());
+
+            if(relacion <= 0) relacion = 1;
+            if(factorCorreccion <= 0) factorCorreccion = 1;
+
+            // DOSIS POR CARBO
+            resultado.dosisCarbo = carbohidratos / relacion;
+
+            // DOSIS CORRECCIÓN
+            if(glucemia <= umbralMin){
+                resultado.dosisCorreccion = 0;
+            }
+            else if(glucemia > umbralMin && glucemia <= umbralMax){
+                resultado.dosisCorreccion = (glucemia - umbralMin) / factorCorreccion;
+            }
+            else if(glucemia > umbralMax){
+                resultado.dosisCorreccion = (umbralMax - umbralMin) / factorCorreccion;
+            }
+
+            // TOTAL
+            resultado.dosisTotal = resultado.dosisCarbo + resultado.dosisCorreccion;
+
+        }
+        catch (Exception e){
+            Toast.makeText(getContext(),"Debe configurar los parámetros del tratamiento", Toast.LENGTH_LONG).show();
+
+            resultado.dosisCarbo = 0;
+            resultado.dosisCorreccion = 0;
+            resultado.dosisTotal = 0;
+        }
+
+        return resultado;
     }
 
     @Override
@@ -93,7 +155,9 @@ public class fragmentAsistente extends Fragment {
             bd.close();
         }
     }
-    public void eventoBtnCalcular(View view){
 
+    public void eventoRedireccionConfigParam(View view) {
+        Intent intent = new Intent(requireContext(), ConfigParamActivity.class);
+        startActivity(intent);
     }
 }

@@ -8,11 +8,11 @@ public class Comidas {
     public Comidas(){
     }
 
-    public Comidas(String emailUsuario, String descripcion, String cantCarbohidratos, Integer idGlucemia) {
+    public Comidas(String emailUsuario, String descripcion, long idGlucemia, String cantCarbohidratos) {
         this.emailUsuario = emailUsuario;
         this.descripcion = descripcion;
-        this.cantCarbohidratos = cantCarbohidratos;
         this.idGlucemia = idGlucemia;
+        this.cantCarbohidratos = cantCarbohidratos;
     }
 
     public String getEmailUsuario() {

@@ -10,11 +10,13 @@ public class Historial {
     private String carbohidratos;
     private String insulina;
     private String descripcion;
+    private String dosisCarbo;
+    private String dosisCorreccion;
 
     public Historial() {
     }
 
-    public Historial(String fecha, String hora, String estAlimenticia, String glucemia, String carbohidratos, String insulina, String descripcion) {
+    public Historial(String fecha, String hora, String estAlimenticia, String glucemia, String carbohidratos, String insulina, String descripcion, String dosisCarbo, String dosisCorreccion) {
         this.fecha = fecha;
         this.hora = hora;
         this.estAlimenticia = estAlimenticia;
@@ -22,6 +24,8 @@ public class Historial {
         this.carbohidratos = carbohidratos;
         this.insulina = insulina;
         this.descripcion = descripcion;
+        this.dosisCarbo = dosisCarbo;
+        this.dosisCorreccion = dosisCorreccion;
     }
 
     public String getFecha() {
@@ -80,6 +84,22 @@ public class Historial {
         this.descripcion = descripcion;
     }
 
+    public String getDosisCarbo() {
+        return dosisCarbo;
+    }
+
+    public void setDosisCarbo(String dosisCarbo) {
+        this.dosisCarbo = dosisCarbo;
+    }
+
+    public String getDosisCorreccion() {
+        return dosisCorreccion;
+    }
+
+    public void setDosisCorreccion(String dosisCorreccion) {
+        this.dosisCorreccion = dosisCorreccion;
+    }
+
     @Override
     public String toString() {
         return "Historial{" +
@@ -90,6 +110,8 @@ public class Historial {
                 ", carbohidratos='" + carbohidratos + '\'' +
                 ", insulina='" + insulina + '\'' +
                 ", descripcion='" + descripcion + '\'' +
+                ", dosisCarbo='" + dosisCarbo + '\'' +
+                ", dosisCorreccion='" + dosisCorreccion + '\'' +
                 '}';
     }
 }

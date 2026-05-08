@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -29,7 +30,6 @@ import adapter.SpinnerEstacionAlimenticia;
 public class fragmentGlucemia extends Fragment {
     private EditText etNivelGlucemia;
     private Spinner spinnerEstacionAlimenticia;
-    private EditText etHorarioDeMedicion;
     private OpenHelper bd;
     private ArrayList<EstacionAlimenticia> lista = new ArrayList<>();
 
@@ -55,7 +55,6 @@ public class fragmentGlucemia extends Fragment {
 
         // Obtenemos controles
         etNivelGlucemia = view.findViewById(R.id.etNivelGlucemia);
-        etHorarioDeMedicion = view.findViewById(R.id.etHorarioDeMedicion);
 
         spinnerEstacionAlimenticia = (Spinner)view.findViewById(R.id.spinnerEstacionAlimenticia);
 
@@ -80,7 +79,6 @@ public class fragmentGlucemia extends Fragment {
         boolean estado = true;
 
         etNivelGlucemia.setError(null);
-        etHorarioDeMedicion.setError(null);
 
         // Validacion nivel de glucemia
         if (etNivelGlucemia.getText().toString().isEmpty())
@@ -92,14 +90,7 @@ public class fragmentGlucemia extends Fragment {
         // Validacion spinner estacion alimenticia
         if (spinnerEstacionAlimenticia.getSelectedItemPosition() == 0) {
             estado = false;
-            Toast.makeText(getContext(), "Seleccione una opción", Toast.LENGTH_SHORT).show();
-        }
-
-        // Validacion horario de medicion
-        if (etHorarioDeMedicion.getText().toString().isEmpty())
-        {
-            etHorarioDeMedicion.setError("Campo requerido");
-            estado = false;
+            Toast.makeText(getContext(), "Seleccione una estación alimenticia", Toast.LENGTH_SHORT).show();
         }
 
         return estado;
@@ -110,6 +101,7 @@ public class fragmentGlucemia extends Fragment {
         if(!validaciones()) { return; }
 
         String fechaActual;
+        String horaActual;
         long idGlucemia;
 
         bd = new OpenHelper(requireContext(), "DiabeControlDB", null, 1);
@@ -134,10 +126,20 @@ public class fragmentGlucemia extends Fragment {
         EstacionAlimenticia est = (EstacionAlimenticia) spinnerEstacionAlimenticia.getSelectedItem();
         glucemia.setEstacionAlimenticia(est.getEstacionAlimenticia());
 
-        glucemia.setHorario(etHorarioDeMedicion.getText().toString());
+        // Hora automática
+        Calendar calendar = Calendar.getInstance();
+        horaActual = String.format(Locale.getDefault(), "%02d:%02d",
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE));
+
+        glucemia.setHorario(horaActual);
 
         // Fecha automática
-        fechaActual = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
+        fechaActual = String.format(Locale.getDefault(), "%04d-%02d-%02d",
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DAY_OF_MONTH));
+
         glucemia.setFecha(fechaActual);
 
         idGlucemia = bd.insertarGlucemia(glucemia);
@@ -153,7 +155,7 @@ public class fragmentGlucemia extends Fragment {
             editor.apply();
 
             etNivelGlucemia.setText("");
-            etHorarioDeMedicion.setText("");
+            spinnerEstacionAlimenticia.setSelection(0);
             Toast.makeText(getContext(), "Glucemia registrada correctamente", Toast.LENGTH_SHORT).show();
 
             //Verificación extra (evita crash raro)

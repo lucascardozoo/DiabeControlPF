@@ -20,6 +20,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.io.ObjectInputStream;
 
 import Entidad.Comidas;
+import Entidad.DosisResultado;
+import Entidad.RegistrosParaAsistente;
 import OpenHelper.OpenHelper;
 
 public class fragmentComida extends Fragment {
@@ -41,36 +43,55 @@ public class fragmentComida extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         //Creación de vista
         View view = inflater.inflate(R.layout.fragment_comida, container, false);
 
-        //Obteneos controles
+        //Obtenemos controles
         etCantCarbohidratos = view.findViewById(R.id.etCantCarbohidratos);
         txtInputEt = view.findViewById(R.id.txtInputEt);
 
-        //Click del botón
+        //Click botón guardar
         Button btnGuardar = view.findViewById(R.id.btnRegistrarComida);
         btnGuardar.setOnClickListener(this::eventoBtnGuardarComida);
+
+        //Click botón omitir
+        Button btnOmitir = view.findViewById(R.id.btnOmitirComida);
+        btnOmitir.setOnClickListener(v -> omitirComida());
 
         return view;
     }
 
     public boolean validacionesComida(){
 
-        boolean estado = true;
-
+        double carbs;
         etCantCarbohidratos.setError(null);
 
-        //Validación cantidad de carbohidratos
         if (etCantCarbohidratos.getText().toString().isEmpty())
         {
             etCantCarbohidratos.setError("Campo requerido");
-            estado = false;
+            return false;
         }
-        return estado;
+
+        try {
+            carbs = Double.parseDouble(etCantCarbohidratos.getText().toString());
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "Carbohidratos inválidos", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
     public void eventoBtnGuardarComida(View view){
+
+        long idGlucemia;
+        SharedPreferences prefs = requireActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
+        idGlucemia = prefs.getLong("id_glucemia", -1);
+        if(idGlucemia == -1){
+            Toast.makeText(getContext(), "No hay glucemia asociada. Registre una glucemia primero.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if(!validacionesComida())
         {
@@ -78,13 +99,13 @@ public class fragmentComida extends Fragment {
         }
 
         long resultado;
-        long idGlucemia;
+        double carbs;
 
         bd = new OpenHelper(requireContext(), "DiabeControlDB", null, 1);
         Comidas comida = new Comidas();
 
         //Obtener email desde SharedPreferences
-        SharedPreferences prefs = requireActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
+        prefs = requireActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
         String email = prefs.getString("email", null);
 
         //Validación importante
@@ -99,8 +120,6 @@ public class fragmentComida extends Fragment {
         comida.setDescripcion(txtInputEt.getText().toString());
         comida.setCantCarbohidratos(etCantCarbohidratos.getText().toString());
 
-        prefs = requireActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
-        idGlucemia = prefs.getLong("id_glucemia", -1);
         comida.setIdGlucemia(idGlucemia);
 
         resultado = bd.insertarComida(comida);
@@ -115,8 +134,50 @@ public class fragmentComida extends Fragment {
 
             Toast.makeText(getContext(), "Comida registrada correctamente", Toast.LENGTH_SHORT).show();
 
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.remove("id_glucemia");
+            editor.apply();
+
             //Evitar crash si la Activity no está bien referenciada
             if(getActivity() instanceof PrincipalActivity){
+                ((PrincipalActivity)getActivity()).irATabAsistente();
+            }
+        }
+    }
+
+    private void omitirComida() {
+        SharedPreferences prefs = requireActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
+        long idGlucemia = prefs.getLong("id_glucemia", -1);
+
+        if(idGlucemia == -1){
+            Toast.makeText(getContext(),
+                    "Primero registre una glucemia",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        bd = new OpenHelper(requireContext(), "DiabeControlDB", null, 1);
+
+        Comidas comida = new Comidas();
+
+        String email = prefs.getString("email", null);
+
+        comida.setEmailUsuario(email);
+        comida.setDescripcion("");
+        comida.setCantCarbohidratos("0");
+        comida.setIdGlucemia(idGlucemia);
+
+        long resultado = bd.insertarComida(comida);
+
+        if(resultado != -1){
+
+            Toast.makeText(getContext(),"Comida omitida correctamente",Toast.LENGTH_SHORT).show();
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.remove("id_glucemia");
+            editor.apply();
+
+            if (getActivity() instanceof PrincipalActivity) {
                 ((PrincipalActivity)getActivity()).irATabAsistente();
             }
         }

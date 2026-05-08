@@ -188,7 +188,7 @@ public class ConfigParamActivity extends AppCompatActivity {
         parametrosConfig.setUmbralMaxCorreccion(etUmbralMax.getText().toString());
         parametrosConfig.setRelacionInsulinaHidratos(etRelacionInsuHidrato.getText().toString());
 
-        long resultado = bd.insertarConfiguracion(parametrosConfig);
+        long resultado = bd.guardarConfiguracion(parametrosConfig);
 
         if(resultado == -1)
         {
@@ -215,5 +215,11 @@ public class ConfigParamActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         bd.close();
+    }
+
+    public void eventoBtnOmitir(View view) {
+        //Ir a la pantalla principal
+        intent = new Intent(getApplicationContext(), PrincipalActivity.class);
+        startActivity(intent);
     }
 }

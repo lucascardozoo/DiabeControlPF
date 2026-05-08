@@ -18,16 +18,23 @@
             android:layout_marginTop="15dp"
             android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:text="Registrar Comida"
+            android:text="Registrar Comida (opcional)"
             android:textSize="22sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Si no vas a registrar comida, podés continuar o omitir este paso."
+            android:background="@drawable/bg_info"
+            android:padding="12dp"
+            android:textColor="#555"
+            android:layout_marginBottom="16dp"/>
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:text="Descripción (opcional):" />
@@ -73,6 +80,15 @@
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:text="Guardar" />
+
+        <Button
+            android:id="@+id/btnOmitirComida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#808080"
+            android:text="Omitir comida" />
 
     </LinearLayout>
 

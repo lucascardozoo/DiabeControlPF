@@ -2,6 +2,7 @@ package OpenHelper;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -40,8 +41,12 @@ public class OpenHelper extends SQLiteOpenHelper {
             "estacion_alimenticia TEXT, " +
             "horario TEXT, " +
             "fecha TEXT, " +
+            "insulina TEXT, " +
+            "dosis_carbo TEXT, " +
+            "dosis_correccion TEXT, " +
             "FOREIGN KEY(email_usuario) REFERENCES usuarios(Email)" +
             ")";
+
     public static String comidaCreacionTable = "CREATE TABLE IF NOT EXISTS comidas (" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "email_usuario TEXT, " +
@@ -131,11 +136,15 @@ public class OpenHelper extends SQLiteOpenHelper {
     }
 
     //Metodo para dar de alta y guardar la configuración personalizada del tratamiento
-    public long insertarConfiguracion(ParametrosConfig config)
+    public long guardarConfiguracion(ParametrosConfig config)
     {
-        long resultado;
+        SQLiteDatabase db = this.getWritableDatabase();
 
-        valores = new ContentValues();
+        // Verificamos si ya existe configuración para el usuario
+        String query = "SELECT id FROM parametros_config WHERE email_usuario = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{config.getEmailUsuario()});
+
+        ContentValues valores = new ContentValues();
         valores.put("email_usuario", config.getEmailUsuario());
         valores.put("tipo_insulina_rapida", config.getTipoInsulinaRapida());
         valores.put("tipo_insulina_basal", config.getTipoInsulinaBasal());
@@ -144,7 +153,20 @@ public class OpenHelper extends SQLiteOpenHelper {
         valores.put("umbral_max", config.getUmbralMaxCorreccion());
         valores.put("relacion_insulina_hidratos", config.getRelacionInsulinaHidratos());
 
-        resultado = this.getWritableDatabase().insert("parametros_config", null, valores);
+        long resultado;
+
+        if(cursor.moveToFirst())
+        {
+            // SI YA EXISTE CONFIG SE HACE UPDATE
+            resultado = db.update("parametros_config", valores, "email_usuario = ?", new String[]{config.getEmailUsuario()});
+        }
+        else
+        {
+            // NO EXISTE SE HACE INSERT
+            resultado = db.insert("parametros_config", null, valores);
+        }
+
+        cursor.close();
 
         return resultado;
     }
@@ -160,6 +182,9 @@ public class OpenHelper extends SQLiteOpenHelper {
         valores.put("estacion_alimenticia", glucemia.getEstacionAlimenticia());
         valores.put("horario", glucemia.getHorario());
         valores.put("fecha", glucemia.getFecha());
+        valores.put("insulina", "");
+        valores.put("dosis_carbo", "");
+        valores.put("dosis_correccion", "");
 
         resultado = this.getWritableDatabase().insert("glucemias", null, valores);
 
@@ -187,13 +212,20 @@ public class OpenHelper extends SQLiteOpenHelper {
 
         RegistrosParaAsistente rg = null;
 
-        String query = "SELECT g.estacion_alimenticia, g.nivel_glucemia, c.carbohidratos, " +
-                "config.factor_correccion, config.relacion_insulina_hidratos " +
-                "FROM comidas c " +
-                "LEFT JOIN glucemias g ON g.id = c.id_glucemia " +
-                "LEFT JOIN parametros_config config ON g.email_usuario = config.email_usuario " +
+        String query = "SELECT g.id, g.estacion_alimenticia, g.nivel_glucemia, " +
+                "IFNULL(c.carbohidratos, '0'), " +
+                "g.insulina, g.dosis_carbo, g.dosis_correccion, " +
+                "config.factor_correccion, config.relacion_insulina_hidratos, " +
+                "config.umbral_min, config.umbral_max " +
+                "FROM glucemias g " +
+                "LEFT JOIN comidas c ON g.id = c.id_glucemia " +
+                "LEFT JOIN parametros_config config ON config.id = (" +
+                "SELECT id FROM parametros_config " +
+                "WHERE email_usuario = g.email_usuario " +
+                "ORDER BY id DESC LIMIT 1" +
+                ") " +
                 "WHERE g.email_usuario = ? " +
-                "ORDER BY c.id DESC LIMIT 1";
+                "ORDER BY g.id DESC LIMIT 1";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, new String[]{email});
@@ -202,14 +234,20 @@ public class OpenHelper extends SQLiteOpenHelper {
         {
             rg = new RegistrosParaAsistente();
 
-            rg.setEstAlimenticia(cursor.getString(0));
-            rg.setGlucemia(cursor.getString(1));
-            rg.setCarbohidratos(cursor.getString(2));
-            rg.setFactorCorreccion(cursor.getString(3));
-            rg.setRelacionInsulinaHidratos(cursor.getString(4));
+            rg.setIdGlucemia(cursor.getLong(0));
+            rg.setEstAlimenticia(cursor.getString(1));
+            rg.setGlucemia(cursor.getString(2));
+            rg.setCarbohidratos(cursor.getString(3));
+            rg.setInsulina(cursor.getString(4));
+            rg.setDosisCarbo(cursor.getString(5));
+            rg.setDosisCorreccion(cursor.getString(6));
+            rg.setFactorCorreccion(cursor.getString(7));
+            rg.setRelacionInsulinaHidratos(cursor.getString(8));
+            rg.setUmbralMin(cursor.getString(9));
+            rg.setUmbralMax(cursor.getString(10));
         }
+
         cursor.close();
-        db.close();
         return rg;
     }
 
@@ -218,12 +256,20 @@ public class OpenHelper extends SQLiteOpenHelper {
     {
         ArrayList<Historial> lista = new ArrayList<>();
 
-        String query = "SELECT g.fecha, g.horario, g.estacion_alimenticia, g.nivel_glucemia, " +
-                "c.carbohidratos, c.descripcion " +
+        String query = "SELECT " +
+                "g.fecha, " +
+                "g.horario, " +
+                "g.estacion_alimenticia, " +
+                "g.nivel_glucemia, " +
+                "IFNULL(c.carbohidratos, '0'), " +
+                "IFNULL(c.descripcion, ''), " +
+                "IFNULL(g.insulina, '0.0'), " +
+                "IFNULL(g.dosis_carbo, ''), " +
+                "IFNULL(g.dosis_correccion, '') " +
                 "FROM glucemias g " +
-                "INNER JOIN comidas c ON g.id = c.id_glucemia " +
+                "LEFT JOIN comidas c ON g.id = c.id_glucemia " +
                 "WHERE g.email_usuario = ? " +
-                "ORDER BY g.fecha DESC, g.horario DESC";
+                "ORDER BY g.fecha DESC, g.horario DESC, g.id DESC";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, new String[]{email});
@@ -239,15 +285,30 @@ public class OpenHelper extends SQLiteOpenHelper {
                 h.setGlucemia(cursor.getString(3));
                 h.setCarbohidratos(cursor.getString(4));
                 h.setDescripcion(cursor.getString(5));
-                h.setInsulina("0");
+                h.setInsulina(cursor.getString(6));
+                h.setDosisCarbo(cursor.getString(7));
+                h.setDosisCorreccion(cursor.getString(8));
 
                 lista.add(h);
 
             } while (cursor.moveToNext());
         }
-        db.close();
         cursor.close();
         return lista;
     }
+
+    public void actualizarDosis (long idGlucemia, String insulina, String dosisCarbo, String dosisCorreccion) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues valores = new ContentValues();
+
+        valores.put("insulina", insulina);
+        valores.put("dosis_carbo", dosisCarbo);
+        valores.put("dosis_correccion", dosisCorreccion);
+
+        db.update("glucemias", valores,"id = ?", new String[]{String.valueOf(idGlucemia)});
+    }
+
 
 }
