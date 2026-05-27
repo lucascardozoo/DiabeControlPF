@@ -58,13 +58,14 @@ public class fragmentGlucemia extends Fragment {
 
         spinnerEstacionAlimenticia = (Spinner)view.findViewById(R.id.spinnerEstacionAlimenticia);
 
-        lista.add(new EstacionAlimenticia(0, "Seleccione una estación alimenticia"));
-        lista.add(new EstacionAlimenticia(1, "Desayuno"));
-        lista.add(new EstacionAlimenticia(2, "Almuerzo"));
-        lista.add(new EstacionAlimenticia(3, "Merienda"));
-        lista.add(new EstacionAlimenticia(4, "Cena"));
-        lista.add(new EstacionAlimenticia(5, "Otros"));
-
+        if(lista.isEmpty()){
+            lista.add(new EstacionAlimenticia(0, "Seleccione una estación alimenticia"));
+            lista.add(new EstacionAlimenticia(1, "Desayuno"));
+            lista.add(new EstacionAlimenticia(2, "Almuerzo"));
+            lista.add(new EstacionAlimenticia(3, "Merienda"));
+            lista.add(new EstacionAlimenticia(4, "Cena"));
+            lista.add(new EstacionAlimenticia(5, "Otros"));
+        }
         SpinnerEstacionAlimenticia adapter = new SpinnerEstacionAlimenticia(requireContext(), lista);
         spinnerEstacionAlimenticia.setAdapter(adapter);
 
@@ -158,10 +159,9 @@ public class fragmentGlucemia extends Fragment {
             spinnerEstacionAlimenticia.setSelection(0);
             Toast.makeText(getContext(), "Glucemia registrada correctamente", Toast.LENGTH_SHORT).show();
 
-            //Verificación extra (evita crash raro)
-            if(getActivity() instanceof PrincipalActivity)
-            {
-                ((PrincipalActivity)getActivity()).irATabComida();
+            if (getActivity() instanceof PrincipalActivity) {
+                ((PrincipalActivity) requireActivity())
+                        .navegarA(new fragmentComida(), PrincipalActivity.TipoPantalla.MAIN, false);
             }
         }
     }

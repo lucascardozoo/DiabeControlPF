@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_glucemia"
+        android:title="Glucemia"
+        android:icon="@drawable/ic_glucemia"/>
+
+    <item
+        android:id="@+id/nav_comida"
+        android:title="Comida"
+        android:icon="@drawable/ic_comida"/>
+
+    <item
+        android:id="@+id/nav_asistente"
+        android:title="Asistente"
+        android:icon="@drawable/ic_asistente"/>
+
+    <item
+        android:id="@+id/nav_historial"
+        android:title="Historial"
+        android:icon="@drawable/ic_historial"/>
+
+</menu>

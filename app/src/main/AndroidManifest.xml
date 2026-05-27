@@ -11,32 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppMobile_DiabeControl">
-        <activity
-            android:name=".Reportes_EstadisticasActivity"
-            android:exported="false" />
-        <activity
-            android:name=".UsuarioActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HistorialActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ComidasActivity"
-            android:exported="false" />
-        <activity
-            android:name=".GlucemiasActivity"
-            android:exported="false" />
+
         <activity
             android:name=".PrincipalActivity"
             android:exported="false" />
         <activity
             android:name=".RegistroActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ConfigParamActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"

@@ -1,5 +1,7 @@
 package frgp.utn.edu.ar.appmobile;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -135,21 +137,31 @@ public class RegistroActivity extends AppCompatActivity {
 
         //Guardar email en SharedPreferences
         SharedPreferences prefs = getSharedPreferences("usuario", MODE_PRIVATE);
-        prefs.edit().putString("email", email).apply();
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("nombre", nombre);
+        editor.putString("email", email);
+        editor.putBoolean("sesion_iniciada", true);
+        editor.apply();
 
         //Limpiar campos
         etNombre.setText("");
         etEmail.setText("");
         etContrasenia.setText("");
 
-        //Ir a configuración (SIN pasar email por intent)
-        intent = new Intent(getApplicationContext(), ConfigParamActivity.class);
+        Intent intent = new Intent(this, PrincipalActivity.class);
+        intent.putExtra("fragment", "config");
+
+        // Borra registro luego del mismo
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        finish();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        bd.close();
+        if (bd != null) {
+            bd.close();
+        }
     }
 }

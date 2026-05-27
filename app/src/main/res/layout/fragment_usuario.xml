@@ -1,0 +1,54 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragmentUsuario">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_marginTop="55dp"
+        android:layout_height="80dp"
+        android:layout_width="match_parent"
+        android:src="@drawable/logo_perfil"/>
+
+    <TextView
+        android:id="@+id/txtConfig"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Perfil de Usuario"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:background="#11C5B5"
+        android:textColor="#3A3A3A"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:padding="16dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:id="@+id/txtNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Nombre:"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/txtEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:text="Email:"
+        android:textSize="16sp"/>
+
+
+
+</LinearLayout>

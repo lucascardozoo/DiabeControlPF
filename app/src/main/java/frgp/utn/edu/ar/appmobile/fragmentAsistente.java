@@ -65,7 +65,7 @@ public class fragmentAsistente extends Fragment {
         txtDosisFinal = view.findViewById(R.id.txtDosisFinal);
 
         Button btnConfig = view.findViewById(R.id.btnConfigParam);
-        btnConfig.setOnClickListener(v -> eventoRedireccionConfigParam(v));
+        btnConfig.setOnClickListener(v -> eventoRedireccionConfigParam());
 
         return view;
     }
@@ -98,7 +98,6 @@ public class fragmentAsistente extends Fragment {
 
             }
         }
-
     }
 
     private DosisResultado calcularDosis(RegistrosParaAsistente registro) {
@@ -144,10 +143,8 @@ public class fragmentAsistente extends Fragment {
             resultado.dosisCorreccion = 0;
             resultado.dosisTotal = 0;
         }
-
         return resultado;
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -155,9 +152,10 @@ public class fragmentAsistente extends Fragment {
             bd.close();
         }
     }
-
-    public void eventoRedireccionConfigParam(View view) {
-        Intent intent = new Intent(requireContext(), ConfigParamActivity.class);
-        startActivity(intent);
+    public void eventoRedireccionConfigParam(){
+        if (getActivity() instanceof PrincipalActivity) {
+            ((PrincipalActivity) requireActivity())
+                    .navegarA(new fragmentConfigParam(), PrincipalActivity.TipoPantalla.MAIN, false);
+        }
     }
 }

@@ -1,82 +1,96 @@
 package frgp.utn.edu.ar.appmobile;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 
 import Entidad.ParametrosConfig;
 import Entidad.TipoInsulina;
-import Entidad.Usuario;
 import OpenHelper.OpenHelper;
 import adapter.SpinnerTipoInsulinaAdapter;
 
-public class ConfigParamActivity extends AppCompatActivity {
-
-    Intent intent;
-    private EditText etFactCorreccion;
-    private EditText etUmbralMin;
-    private EditText etUmbralMax;
-    private EditText etRelacionInsuHidrato;
-    private Spinner spinnerR;
-    private Spinner spinnerB;
+public class fragmentConfigParam extends Fragment {
+    private EditText etFactCorreccion, etUmbralMin, etUmbralMax, etRelacionInsuHidrato;
+    private Spinner spinnerR, spinnerB;
     private ArrayList<TipoInsulina> todas = new ArrayList<>();
     private ArrayList<TipoInsulina> listaR = new ArrayList<>();
     private ArrayList<TipoInsulina> listaB = new ArrayList<>();
     private ParametrosConfig parametrosConfig;
     private OpenHelper bd;
 
+    public fragmentConfigParam() {
+    }
+
+    public static fragmentConfigParam newInstance(String param1, String param2) {
+        fragmentConfigParam fragment = new fragmentConfigParam();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_config_param);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        if (getArguments() != null) {
+        }
+    }
 
-        etFactCorreccion = findViewById(R.id.etFactCorreccion);
-        etUmbralMin = findViewById(R.id.etUmbralMin);
-        etUmbralMax = findViewById(R.id.etUmbralMax);
-        etRelacionInsuHidrato = findViewById(R.id.etRelacionInsuHidrato);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        spinnerR = (Spinner)findViewById(R.id.spRapida);
-        spinnerB = (Spinner)findViewById(R.id.spBasal);
+        View view = inflater.inflate(R.layout.fragment_config_param, container, false);
+
+        etFactCorreccion = view.findViewById(R.id.etFactCorreccion);
+        etUmbralMin = view.findViewById(R.id.etUmbralMin);
+        etUmbralMax = view.findViewById(R.id.etUmbralMax);
+        etRelacionInsuHidrato = view.findViewById(R.id.etRelacionInsuHidrato);
+
+        spinnerR = view.findViewById(R.id.spRapida);
+        spinnerB = view.findViewById(R.id.spBasal);
+
+        cargarSpinners();
+
+        return view;
+    }
+    private void cargarSpinners() {
 
         todas.add(new TipoInsulina(0, "Seleccione una opción", "Rapida"));
         todas.add(new TipoInsulina(1, "Aspartica", "Rapida"));
         todas.add(new TipoInsulina(2, "Lispro", "Rapida"));
         todas.add(new TipoInsulina(3, "Regular", "Rapida"));
+
         todas.add(new TipoInsulina(0, "Seleccione una opción", "Basal"));
         todas.add(new TipoInsulina(1, "Glargina", "Basal"));
         todas.add(new TipoInsulina(2, "Detemir", "Basal"));
         todas.add(new TipoInsulina(3, "Degludec", "Basal"));
 
-        for(TipoInsulina i : todas){
-            if(i.getTipoInsulina().equals("Rapida")){
+        for (TipoInsulina i : todas) {
+            if (i.getTipoInsulina().equals("Rapida")) {
                 listaR.add(i);
-            }else if(i.getTipoInsulina().equals("Basal")){
+            } else {
                 listaB.add(i);
             }
         }
-        SpinnerTipoInsulinaAdapter adapterR = new SpinnerTipoInsulinaAdapter(this,listaR);
+
+        SpinnerTipoInsulinaAdapter adapterR =
+                new SpinnerTipoInsulinaAdapter(getContext(), listaR);
+
+        SpinnerTipoInsulinaAdapter adapterB =
+                new SpinnerTipoInsulinaAdapter(getContext(), listaB);
+
         spinnerR.setAdapter(adapterR);
-        SpinnerTipoInsulinaAdapter adapterB = new SpinnerTipoInsulinaAdapter(this,listaB);
         spinnerB.setAdapter(adapterB);
     }
     public boolean validacionesConfig() {
@@ -90,11 +104,11 @@ public class ConfigParamActivity extends AppCompatActivity {
         // Validacion spinner
         if (spinnerR.getSelectedItemPosition() == 0) {
             estado = false;
-            Toast.makeText(this, "Seleccione un tipo de insulina rapida", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Seleccione un tipo de insulina rapida", Toast.LENGTH_SHORT).show();
         }
         if (spinnerB.getSelectedItemPosition() == 0) {
             estado = false;
-            Toast.makeText(this, "Seleccione un tipo de insulina basal", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Seleccione un tipo de insulina basal", Toast.LENGTH_SHORT).show();
         }
 
         // Validacion del factor de corrección
@@ -158,25 +172,18 @@ public class ConfigParamActivity extends AppCompatActivity {
         }
         return estado;
     }
-
     public void eventoBtnGuardarConfiguracion(View view) {
 
-        if(!validacionesConfig())
-        {
-            return;
-        }
+        if (!validacionesConfig()) return;
 
-        bd = new OpenHelper(this, "DiabeControlDB", null, 1);
+        bd = new OpenHelper(getContext(), "DiabeControlDB", null, 1);
         parametrosConfig = new ParametrosConfig();
 
-        //Obtener email desde SharedPreferences
-        SharedPreferences prefs = getSharedPreferences("usuario", MODE_PRIVATE);
+        SharedPreferences prefs = getContext().getSharedPreferences("usuario", Context.MODE_PRIVATE);
         String email = prefs.getString("email", null);
 
-        //Validación importante
-        if(email == null)
-        {
-            Toast.makeText(this, "Error: usuario no identificado", Toast.LENGTH_SHORT).show();
+        if (email == null) {
+            Toast.makeText(getContext(), "Usuario no identificado", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -190,36 +197,21 @@ public class ConfigParamActivity extends AppCompatActivity {
 
         long resultado = bd.guardarConfiguracion(parametrosConfig);
 
-        if(resultado == -1)
-        {
-            Toast.makeText(this, "Error al guardar configuración", Toast.LENGTH_SHORT).show();
+        if (resultado == -1) {
+            Toast.makeText(getContext(), "Error al guardar", Toast.LENGTH_SHORT).show();
             return;
         }
+        Toast.makeText(getContext(), "Guardado correctamente", Toast.LENGTH_SHORT).show();
 
-        //Limpiar campos
-        etFactCorreccion.setText("");
-        etUmbralMin.setText("");
-        etUmbralMax.setText("");
-        etRelacionInsuHidrato.setText("");
-
-        Toast.makeText(this, "Configuración guardada correctamente", Toast.LENGTH_SHORT).show();
-
-        //Ir a la pantalla principal
-        intent = new Intent(getApplicationContext(), PrincipalActivity.class);
-        startActivity(intent);
-
-        // (opcional pero recomendado)
-        finish();
+        if (getActivity() instanceof PrincipalActivity) {
+            ((PrincipalActivity) requireActivity())
+                    .navegarA(new fragmentGlucemia(), PrincipalActivity.TipoPantalla.MAIN, false);
+        }
     }
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        bd.close();
-    }
-
     public void eventoBtnOmitir(View view) {
-        //Ir a la pantalla principal
-        intent = new Intent(getApplicationContext(), PrincipalActivity.class);
-        startActivity(intent);
+        if (getActivity() instanceof PrincipalActivity) {
+            ((PrincipalActivity) requireActivity())
+                    .navegarA(new fragmentGlucemia(), PrincipalActivity.TipoPantalla.MAIN, false);
+        }
     }
 }

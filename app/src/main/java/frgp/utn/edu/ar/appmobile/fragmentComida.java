@@ -138,9 +138,9 @@ public class fragmentComida extends Fragment {
             editor.remove("id_glucemia");
             editor.apply();
 
-            //Evitar crash si la Activity no está bien referenciada
-            if(getActivity() instanceof PrincipalActivity){
-                ((PrincipalActivity)getActivity()).irATabAsistente();
+            if (getActivity() instanceof PrincipalActivity) {
+                ((PrincipalActivity) requireActivity())
+                        .navegarA(new fragmentAsistente(), PrincipalActivity.TipoPantalla.MAIN, false);
             }
         }
     }
@@ -153,6 +153,10 @@ public class fragmentComida extends Fragment {
             Toast.makeText(getContext(),
                     "Primero registre una glucemia",
                     Toast.LENGTH_SHORT).show();
+            if (getActivity() instanceof PrincipalActivity) {
+                ((PrincipalActivity) requireActivity())
+                        .navegarA(new fragmentGlucemia(), PrincipalActivity.TipoPantalla.MAIN, false);
+            }
             return;
         }
 
@@ -178,7 +182,8 @@ public class fragmentComida extends Fragment {
             editor.apply();
 
             if (getActivity() instanceof PrincipalActivity) {
-                ((PrincipalActivity)getActivity()).irATabAsistente();
+                ((PrincipalActivity) requireActivity())
+                        .navegarA(new fragmentAsistente(), PrincipalActivity.TipoPantalla.MAIN, false);
             }
         }
     }
