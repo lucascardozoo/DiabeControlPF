@@ -135,21 +135,29 @@ public class RegistroActivity extends AppCompatActivity {
 
         //Guardar email en SharedPreferences
         SharedPreferences prefs = getSharedPreferences("usuario", MODE_PRIVATE);
-        prefs.edit().putString("email", email).apply();
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("nombre", nombre);
+        editor.putString("email", email);
+        editor.putBoolean("sesion_iniciada", true);
+        editor.apply();
 
         //Limpiar campos
         etNombre.setText("");
         etEmail.setText("");
         etContrasenia.setText("");
 
-        //Ir a configuración (SIN pasar email por intent)
         intent = new Intent(getApplicationContext(), ConfigParamActivity.class);
+        // Borra registro luego del mismo
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        finish();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        bd.close();
+        if (bd != null) {
+            bd.close();
+        }
     }
 }

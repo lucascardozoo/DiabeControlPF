@@ -28,8 +28,21 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = getSharedPreferences("usuario", MODE_PRIVATE);
+        boolean sesionIniciada = prefs.getBoolean("sesion_iniciada", false);
+
+        if (sesionIniciada) {
+            Intent intent = new Intent(this, PrincipalActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -105,17 +118,25 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        //Guardar email correctamente
+        // Obtener nombre del usuario desde BD
+        String nombre = bd.obtenerNombrePorEmail(email);
+        // Guardar sesión
         SharedPreferences prefs = getSharedPreferences("usuario", MODE_PRIVATE);
-        prefs.edit().putString("email", email).apply();
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("email", email);
+        editor.putString("nombre", nombre);
+        editor.putBoolean("sesion_iniciada", true);
+        editor.apply();
 
         //Limpiar campos DESPUÉS de guardar el valor
         etEmail.setText("");
         etContrasenia.setText("");
 
-        //NO mandamos más el email por intent
         intent = new Intent(getApplicationContext(), PrincipalActivity.class);
+        // Borra Login
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        finish();
 
     }
     public void eventoBtnRegistrarse(View view) {
@@ -126,6 +147,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        bd.close();
+        if (bd != null) {
+            bd.close();
+        }
     }
 }

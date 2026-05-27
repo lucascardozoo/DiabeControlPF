@@ -33,26 +33,21 @@ public class PrincipalActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_principal);
 
-        // Reemplaza el bloque de ViewCompat.setOnApplyWindowInsetsListener que tienes por este:
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawer_layout), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
 
             Toolbar toolbar = findViewById(R.id.toolbar);
             if (toolbar != null) {
-                // Le damos un margen superior para empujar TODA la barra debajo de la cámara
-                // systemBars.top te da el espacio exacto del notch/cámara del dispositivo
                 android.view.ViewGroup.MarginLayoutParams params =
                         (android.view.ViewGroup.MarginLayoutParams) toolbar.getLayoutParams();
                 params.topMargin = systemBars.top;
                 toolbar.setLayoutParams(params);
 
-                // Nos aseguramos de limpiar cualquier padding interno anterior en la Toolbar
                 toolbar.setPadding(0, 0, 0, 0);
             }
 
             TabLayout tabLayout = findViewById(R.id.tabLayout);
             if (tabLayout != null) {
-                // Mantiene el TabLayout en su posición inferior correcta sin cortarse
                 tabLayout.setPadding(0, 0, 0, systemBars.bottom);
             }
             return insets;
@@ -92,6 +87,14 @@ public class PrincipalActivity extends AppCompatActivity {
                 } else if (id == R.id.nav_reportes) {
                     Intent intent = new Intent(PrincipalActivity.this, Reportes_EstadisticasActivity.class);
                     startActivity(intent);
+                } else if (id == R.id.nav_logout) {
+                    // Borra los datos guardados del usuario
+                    getSharedPreferences("usuario", MODE_PRIVATE).edit().clear().apply();
+                    // Volver al Login
+                    Intent intent = new Intent(PrincipalActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
                 }
                 // Cierra el menú deslizable tras la selección
                 drawerLayout.closeDrawers();

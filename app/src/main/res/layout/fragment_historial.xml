@@ -24,14 +24,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#CCCCCC"
-        android:padding="6dp">
+        android:background="#11C5B5"
+        android:padding="7dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Fecha"
+            android:textColor="#3A3A3A"
             android:textStyle="bold"/>
 
         <TextView
@@ -39,6 +40,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Hora"
+            android:textColor="#3A3A3A"
             android:textStyle="bold"/>
 
         <TextView
@@ -46,6 +48,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Tipo"
+            android:textColor="#3A3A3A"
             android:textStyle="bold"/>
 
         <TextView
@@ -53,6 +56,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Gluc."
+            android:textColor="#3A3A3A"
             android:textStyle="bold"/>
 
         <TextView
@@ -60,6 +64,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="CHO"
+            android:textColor="#3A3A3A"
             android:textStyle="bold"/>
 
         <TextView
@@ -67,6 +72,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Ins."
+            android:textColor="#3A3A3A"
             android:textStyle="bold"/>
 
         <TextView
@@ -74,6 +80,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Desc"
+            android:textColor="#3A3A3A"
             android:textStyle="bold"/>
     </LinearLayout>
 

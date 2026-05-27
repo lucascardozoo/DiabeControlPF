@@ -83,6 +83,8 @@
         android:layout_marginTop="20dp"
         android:text="@string/iniciarSesion"
         android:layout_gravity="center"
+        android:backgroundTint="#11C5B5"
+        android:textColor="#3A3A3A"
         android:id="@+id/btnIniciarSesion"
         android:onClick="eventoBtnIniciarSesion"/>
 
@@ -93,6 +95,8 @@
         android:layout_marginTop="30dp"
         android:text="@string/registrarse"
         android:layout_gravity="center"
+        android:backgroundTint="#5DADE2"
+        android:textColor="#2C2C2C"
         android:id="@+id/btnRegistrarse"
         android:onClick="eventoBtnRegistrarse"/>
 

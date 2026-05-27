@@ -310,5 +310,16 @@ public class OpenHelper extends SQLiteOpenHelper {
         db.update("glucemias", valores,"id = ?", new String[]{String.valueOf(idGlucemia)});
     }
 
+    public String obtenerNombrePorEmail(String email)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT Nombre FROM usuarios WHERE Email = ?", new String[]{email});
+        String nombre = "Sin nombre";
+        if(cursor.moveToFirst()) {
+            nombre = cursor.getString(0);
+        }
+        cursor.close();
+        return nombre;
+    }
 
 }

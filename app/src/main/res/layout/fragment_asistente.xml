@@ -330,9 +330,9 @@
             android:padding="4dp"
             android:textSize="12sp"
             android:layout_gravity="center"
-            android:backgroundTint="#808080"
+            android:backgroundTint="#5DADE2"
+            android:textColor="#2C2C2C"
             android:onClick="eventoRedireccionConfigParam"
             android:text="Configuración de Parametros"
-            android:textColor="#FFFFFF"
             android:layout_marginTop="10dp"/>
 </LinearLayout>

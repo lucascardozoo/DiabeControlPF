@@ -13,7 +13,9 @@
             android:id="@+id/nav_reportes"
             android:icon="@android:drawable/ic_menu_sort_by_size"
             android:title="Reportes y Estadísticas" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@android:drawable/ic_lock_power_off"
+            android:title="Cerrar sesión" />
     </group>
 </menu>
-
-
