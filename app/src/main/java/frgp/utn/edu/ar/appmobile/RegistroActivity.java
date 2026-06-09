@@ -1,5 +1,7 @@
 package frgp.utn.edu.ar.appmobile;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -146,7 +148,9 @@ public class RegistroActivity extends AppCompatActivity {
         etEmail.setText("");
         etContrasenia.setText("");
 
-        intent = new Intent(getApplicationContext(), ConfigParamActivity.class);
+        Intent intent = new Intent(this, PrincipalActivity.class);
+        intent.putExtra("fragment", "config");
+
         // Borra registro luego del mismo
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
