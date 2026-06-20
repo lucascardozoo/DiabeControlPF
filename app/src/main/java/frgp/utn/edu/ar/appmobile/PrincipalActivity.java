@@ -86,15 +86,18 @@ public class PrincipalActivity extends AppCompatActivity {
             }
             return true;
         });
-        //Carga por defecto
-        if (savedInstanceState == null) {
-            navegarA(fragGlucemia, PrincipalActivity.TipoPantalla.MAIN, false);
+        boolean irAConfig = getIntent().getBooleanExtra("irAConfig", false);
+        if (irAConfig) {
+            navegarA(new fragmentConfigParam(),
+                    TipoPantalla.FULLSCREEN,
+                    false);
+        } else {
+            navegarA(fragGlucemia,
+                    TipoPantalla.MAIN,
+                    false);
         }
 
-        // -------------------------------
-        // 🔽 DRAWER (MENÚ LATERAL)
-        // -------------------------------
-
+        // DRAWER (MENÚ LATERAL)
         navigationView.setNavigationItemSelectedListener(item -> {
 
             int id = item.getItemId();
@@ -137,9 +140,7 @@ public class PrincipalActivity extends AppCompatActivity {
         });
     }
 
-    // =========================================
     // METODO CENTRAL DE NAVEGACIÓN
-    // =========================================
 
     public void navegarA(Fragment fragment, TipoPantalla tipo, boolean agregarAlBackStack) {
         pantallaActual = tipo;

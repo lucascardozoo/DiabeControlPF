@@ -1,14 +1,10 @@
 package frgp.utn.edu.ar.appmobile;
 
-import static android.app.PendingIntent.getActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.CpuUsageInfo;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -149,9 +145,7 @@ public class RegistroActivity extends AppCompatActivity {
         etContrasenia.setText("");
 
         Intent intent = new Intent(this, PrincipalActivity.class);
-        intent.putExtra("fragment", "config");
-
-        // Borra registro luego del mismo
+        intent.putExtra("irAConfig", true);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

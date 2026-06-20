@@ -21,7 +21,6 @@
         android:layout_marginRight="10dp"
         android:backgroundTint="#E0E0E0"
         android:textColor="#4A4A4A"
-        android:onClick="eventoBtnOmitir"
         android:text="Omitir" />
 
     <ImageView
@@ -180,7 +179,6 @@
         android:layout_gravity="center"
         android:backgroundTint="#11C5B5"
         android:textColor="#3A3A3A"
-        android:text="Guardar configuración"
-        android:onClick="eventoBtnGuardarConfiguracion"/>
+        android:text="Guardar configuración"/>
 
 </LinearLayout>

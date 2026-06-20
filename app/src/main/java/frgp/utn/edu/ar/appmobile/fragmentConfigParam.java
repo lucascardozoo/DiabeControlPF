@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -59,6 +60,11 @@ public class fragmentConfigParam extends Fragment {
 
         spinnerR = view.findViewById(R.id.spRapida);
         spinnerB = view.findViewById(R.id.spBasal);
+
+        Button btnGuardar = view.findViewById(R.id.btnGuardarConfiguracion);
+        Button btnOmitir = view.findViewById(R.id.btnOmitir);
+        btnGuardar.setOnClickListener(v -> eventoBtnGuardarConfiguracion(v));
+        btnOmitir.setOnClickListener(v -> eventoBtnOmitir(v));
 
         cargarSpinners();
 
